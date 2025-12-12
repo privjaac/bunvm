@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="BunVM - The fast, simple, and powerful version manager for Bun. Zero dependencies, lightning fast, with auto-switching and tab completion.">
     <meta name="keywords" content="bun, version manager, bunvm, bun.sh, javascript, typescript">
+    <link rel="icon" type="image/svg+xml" href="https://icon.icepanel.io/Technology/svg/Bun.svg">
     <title>BunVM - The Ultimate Bun Version Manager</title>
 
     <!-- Tailwind CSS v4 -->
@@ -13,6 +14,11 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Custom animations and styles -->
     <style>
@@ -25,6 +31,11 @@
             --border: rgba(0, 0, 0, 0.1);
             --glass-bg: rgba(255, 255, 255, 0.7);
             --glass-border: rgba(255, 255, 255, 0.18);
+            
+            /* Typography */
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
         .dark {
@@ -42,8 +53,29 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             transition: background 0.3s, color 0.3s;
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
+        }
+
+        code, pre {
+            font-family: 'JetBrains Mono', monospace !important;
+            font-feature-settings: "liga" 1, "calt" 1; /* Enable ligatures */
+            font-variant-ligatures: common-ligatures;
+        }
+
+        /* Terminal-like look for code blocks */
+        .code-block code {
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+        
         .glass {
             background: var(--glass-bg);
             backdrop-filter: blur(20px) saturate(180%);
@@ -134,6 +166,7 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             overflow: hidden;
+            font-family: var(--font-mono);
         }
 
         .code-header {
@@ -166,7 +199,7 @@
         }
 
         code {
-            font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+            font-family: var(--font-mono);
             font-size: 14px;
             line-height: 1.6;
         }
@@ -248,11 +281,8 @@
     <nav class="glass">
         <div class="px-6 h-full flex items-center justify-between">
             <div class="flex items-center gap-3">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16 4L28 12V20L16 28L4 20V12L16 4Z" fill="var(--primary)"/>
-                        <path d="M16 10L22 14V18L16 22L10 18V14L16 10Z" fill="white" opacity="0.8"/>
-                    </svg>
-                    <span class="text-xl font-semibold" style="color: var(--text-primary)">
+                <img src="https://icon.icepanel.io/Technology/svg/Bun.svg" alt="Bun Logo" width="32" height="32" class="w-8 h-8">
+                <span class="text-xl font-bold tracking-tight" style="color: var(--text-primary); font-family: var(--font-heading);">
                         BunVM
                     </span>
                 </div>
@@ -288,7 +318,7 @@
                  <span class="text-sm font-medium" style="color: var(--text-secondary)">With Tab Completion!</span>
             </div>
 
-            <h1 class="text-5xl md:text-7xl font-bold mb-6" style="color: var(--text-primary)">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight" style="color: var(--text-primary)">
                 The Ultimate Bun<br/>Version Manager
             </h1>
 
@@ -664,9 +694,7 @@
             <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <div class="flex items-center gap-2 mb-4">
-                        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                            <path d="M16 4L28 12V20L16 28L4 20V12L16 4Z" fill="var(--primary)"/>
-                        </svg>
+                        <img src="https://icon.icepanel.io/Technology/svg/Bun.svg" alt="Bun Logo" width="24" height="24" class="w-6 h-6">
                         <span class="text-lg font-semibold" style="color: var(--text-primary)">BunVM</span>
                     </div>
                     <p style="color: var(--text-secondary)">The ultimate Bun version manager.</p>
@@ -698,7 +726,7 @@
             </div>
 
             <div class="pt-8 border-t text-center" style="border-color: var(--border); color: var(--text-secondary)">
-                <p class="flex items-center justify-center gap-1">Made with <i data-lucide="heart" class="w-4 h-4 text-red-500 fill-current"></i> for the Bun community | By JAAC</p>
+                <p class="flex items-center justify-center gap-1">Made with <i data-lucide="heart" class="w-4 h-4 text-red-500 fill-current"></i> for the Bun community | By Jaac</p>
                 <p class="mt-2 text-sm">&copy; 2025 BunVM. All rights reserved.</p>
             </div>
         </div>
