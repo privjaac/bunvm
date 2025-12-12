@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+bunvm_fetch_latest() {
+    curl -fsSL "https://api.github.com/repos/oven-sh/bun/releases/latest" \
+        | grep '"tag_name"' \
+        | sed 's/.*"bun-v//;s/".*//'
+}

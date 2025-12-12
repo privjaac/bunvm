@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+bunvm_detect_platform() {
+    local K
+    local A
+
+    K="$(uname -s)"
+    A="$(uname -m)"
+
+    case "$K" in
+        Linux)
+            case "$A" in
+                x86_64) echo "linux-x64" ;;
+                arm64|aarch64) echo "linux-aarch64" ;;
+                *) echo "linux-x64" ;;
+            esac
+        ;;
+        Darwin)
+            case "$A" in
+                x86_64) echo "darwin-x64" ;;
+                arm64) echo "darwin-aarch64" ;;
+                *) echo "darwin-x64" ;;
+            esac
+        ;;
+        *)
+            bunvm_msg_error "❌ Plataforma no soportada: $K $A"
+            return 1
+        ;;
+    esac
+}

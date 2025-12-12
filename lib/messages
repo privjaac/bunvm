@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+bunvm_msg() {
+    echo "$*"
+}
+
+bunvm_msg_success() {
+    echo "✔ $*"
+}
+
+bunvm_msg_error() {
+    echo "❌ $*" >&2
+}
+
+bunvm_msg_info() {
+    echo "ℹ $*"
+}
