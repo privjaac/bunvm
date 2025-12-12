@@ -66,7 +66,7 @@ mv "$BINARY" "$TARGET/bin/bun"
 chmod +x "$TARGET/bin/bun"
 rm -rf "$TARGET/tmp"
 
-bunvm_msg_success "✔ Bun $VERSION instalado correctamente"
+bunvm_msg_success "Bun $VERSION instalado correctamente"
 bunvm_msg_info "Actívalo con: bunvm use $VERSION"
 
 # Activar automáticamente si no hay versión activa

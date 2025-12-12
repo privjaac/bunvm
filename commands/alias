@@ -22,4 +22,4 @@ fi
 
 echo "$NAME=$VERSION" >> "$BUNVM_ETC/aliases"
 
-bunvm_msg_success "✔ Alias '$NAME' registrado → $VERSION"
+bunvm_msg_success "Alias '$NAME' registrado → $VERSION"

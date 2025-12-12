@@ -27,11 +27,14 @@ if [ ! -f "$TARGET/bin/bun" ]; then
   return 1
 fi
 
-# NO persistir default aquí (eso es bunvm default)
-# Solo activar para el shell actual
+# Activar en el shell actual
 case ":$PATH:" in
   *":$TARGET/bin:"*) ;;
   *) export PATH="$TARGET/bin:$PATH" ;;
 esac
 
-bunvm_msg_success "✔ Ahora usando Bun $VERSION"
+# Persistir como versión por defecto
+echo "$VERSION" > "$BUNVM_ETC/current"
+
+bunvm_msg_success "Ahora usando Bun $VERSION"
+bunvm_msg_info "Versión guardada como default para futuros shells"

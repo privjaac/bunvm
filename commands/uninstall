@@ -22,4 +22,4 @@ if [ -f "$BUNVM_ETC/aliases" ]; then
   mv "$BUNVM_ETC/aliases.tmp" "$BUNVM_ETC/aliases" 2>/dev/null || true
 fi
 
-bunvm_msg_success "✔ Bun $VERSION desinstalado."
+bunvm_msg_success "Bun $VERSION desinstalado."

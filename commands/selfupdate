@@ -38,4 +38,4 @@ if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/
 fi
 chmod +x "$BUNVM_DIR/autoload/autoenv.sh"
 
-bunvm_msg_success "✔ BunVM actualizado correctamente."
+bunvm_msg_success "BunVM actualizado correctamente."
