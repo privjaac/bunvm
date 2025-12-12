@@ -1,7 +1,5 @@
 {
   "version": 1,
-  "include": [
-    "/",
-    "/install.sh"
-  ]
+  "include": ["/*"],
+  "exclude": []
 }
