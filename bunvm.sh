@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+
+# asegurar PATH mínimo del sistema
+if [[ ":$PATH:" != *":/usr/bin:"* ]]; then
+  export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+fi
+
 export BUNVM_DIR="${BUNVM_DIR:-$HOME/.bunvm}"
 export BUNVM_CMDS="$BUNVM_DIR/commands"
 export BUNVM_LIB="$BUNVM_DIR/lib"

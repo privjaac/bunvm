@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
 bunvm_detect_platform() {
+    local UNAME_S="/usr/bin/uname"
     local K
     local A
 
-    K="$(uname -s)"
-    A="$(uname -m)"
+    if [ ! -x "$UNAME_S" ]; then
+        bunvm_msg_error "No se encontró uname en /usr/bin/uname"
+        return 1
+    fi
+
+    K="$("$UNAME_S" -s)"
+    A="$("$UNAME_S" -m)"
 
     case "$K" in
         Linux)
@@ -14,17 +20,17 @@ bunvm_detect_platform() {
                 arm64|aarch64) echo "linux-aarch64" ;;
                 *) echo "linux-x64" ;;
             esac
-        ;;
+            ;;
         Darwin)
             case "$A" in
                 x86_64) echo "darwin-x64" ;;
                 arm64) echo "darwin-aarch64" ;;
                 *) echo "darwin-x64" ;;
             esac
-        ;;
+            ;;
         *)
-            bunvm_msg_error "❌ Plataforma no soportada: $K $A"
+            bunvm_msg_error "Plataforma no soportada: $K $A"
             return 1
-        ;;
+            ;;
     esac
 }
