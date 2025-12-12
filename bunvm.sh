@@ -49,6 +49,15 @@ if [ -d "$BUNVM_LIB" ]; then
 fi
 
 # ------------------------------------------------------------------
+# Autocompletado
+# ------------------------------------------------------------------
+if [ -n "$BASH_VERSION" ]; then
+  [ -f "$BUNVM_AUTOLOAD/completion.bash" ] && . "$BUNVM_AUTOLOAD/completion.bash"
+elif [ -n "$ZSH_VERSION" ]; then
+  [ -f "$BUNVM_AUTOLOAD/completion.zsh" ] && . "$BUNVM_AUTOLOAD/completion.zsh"
+fi
+
+# ------------------------------------------------------------------
 # Comando principal
 # ------------------------------------------------------------------
 bunvm() {

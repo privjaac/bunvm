@@ -29,10 +29,18 @@ for LIB in detect_platform fetch_version messages validate; do
   chmod +x "$BUNVM_DIR/lib/$LIB"
 done
 
-echo "📥 Descargando autoenv…"
+echo "📥 Descargando autoenv y autocompletado…"
 curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/autoenv.sh" \
   -o "$BUNVM_DIR/autoload/autoenv.sh"
 chmod +x "$BUNVM_DIR/autoload/autoenv.sh"
+
+curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/completion.bash" \
+  -o "$BUNVM_DIR/autoload/completion.bash"
+chmod +x "$BUNVM_DIR/autoload/completion.bash"
+
+curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/completion.zsh" \
+  -o "$BUNVM_DIR/autoload/completion.zsh"
+chmod +x "$BUNVM_DIR/autoload/completion.zsh"
 
 # actualizar shell profile
 if [ -f "$HOME/.zshrc" ]; then

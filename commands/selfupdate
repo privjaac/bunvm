@@ -38,4 +38,21 @@ if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/
 fi
 chmod +x "$BUNVM_DIR/autoload/autoenv.sh"
 
+# actualizar autocompletado bash
+if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/completion.bash" \
+  -o "$BUNVM_DIR/autoload/completion.bash"; then
+  bunvm_msg_error "❌ No se pudo actualizar completion.bash"
+  return 1
+fi
+chmod +x "$BUNVM_DIR/autoload/completion.bash"
+
+# actualizar autocompletado zsh
+if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/completion.zsh" \
+  -o "$BUNVM_DIR/autoload/completion.zsh"; then
+  bunvm_msg_error "❌ No se pudo actualizar completion.zsh"
+  return 1
+fi
+chmod +x "$BUNVM_DIR/autoload/completion.zsh"
+
 bunvm_msg_success "BunVM actualizado correctamente."
+bunvm_msg_info "Recarga tu shell para activar el autocompletado: source ~/.zshrc (o ~/.bashrc)"
