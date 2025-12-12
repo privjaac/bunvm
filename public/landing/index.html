@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,43 +10,161 @@
     <!-- Tailwind CSS v4 -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <!-- Custom animations and styles -->
     <style>
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        :root {
+            --primary: #007AFF;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f7;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --border: rgba(0, 0, 0, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.18);
         }
 
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .dark {
+            --primary: #0A84FF;
+            --bg-primary: #000000;
+            --bg-secondary: #1c1c1e;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(28, 28, 30, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Liquid Glass Header - Apple Style */
+        nav.glass {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.8) 0%,
+                rgba(255, 255, 255, 0.6) 100%
+            );
+            backdrop-filter: blur(60px) saturate(200%) brightness(105%);
+            -webkit-backdrop-filter: blur(60px) saturate(200%) brightness(105%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow:
+                0 1px 0 0 rgba(255, 255, 255, 0.4) inset,
+                0 1px 3px 0 rgba(0, 0, 0, 0.05),
+                0 8px 32px -8px rgba(0, 0, 0, 0.08);
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav.glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.8) 20%,
+                rgba(255, 255, 255, 0.8) 80%,
+                transparent 100%
+            );
+            opacity: 0.5;
+        }
+
+        .dark nav.glass {
+            background: linear-gradient(
+                135deg,
+                rgba(20, 20, 22, 0.85) 0%,
+                rgba(28, 28, 30, 0.75) 100%
+            );
+            backdrop-filter: blur(60px) saturate(200%) brightness(120%);
+            -webkit-backdrop-filter: blur(60px) saturate(200%) brightness(120%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow:
+                0 1px 0 0 rgba(255, 255, 255, 0.08) inset,
+                0 1px 3px 0 rgba(0, 0, 0, 0.3),
+                0 8px 32px -8px rgba(0, 0, 0, 0.5);
+        }
+
+        .dark nav.glass::before {
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.15) 20%,
+                rgba(255, 255, 255, 0.15) 80%,
+                transparent 100%
+            );
+        }
+
+        /* Hover effect on nav links */
+        nav a {
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transform: translateX(-50%);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+        }
+
+        nav a:hover::before {
+            width: 100%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
         .animate-float {
             animation: float 6s ease-in-out infinite;
         }
 
-        .animate-gradient {
-            background-size: 200% 200%;
-            animation: gradient 8s ease infinite;
-        }
-
         .code-block {
             position: relative;
-            background: linear-gradient(to bottom right, #1e293b, #0f172a);
-            border: 1px solid #334155;
-            border-radius: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
             overflow: hidden;
         }
 
         .code-header {
-            background: rgba(51, 65, 85, 0.5);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
             padding: 12px 20px;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 8px;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         .code-dot {
@@ -57,72 +175,112 @@
 
         pre {
             margin: 0;
-            padding: 20px;
+            padding: 24px;
             overflow-x: auto;
         }
 
         code {
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
             font-size: 14px;
             line-height: 1.6;
         }
 
         .copy-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(59, 130, 246, 0.2);
-            border: 1px solid rgba(59, 130, 246, 0.5);
-            color: #60a5fa;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            color: var(--primary);
             padding: 6px 12px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            font-weight: 500;
         }
 
         .copy-btn:hover {
-            background: rgba(59, 130, 246, 0.3);
-            border-color: #60a5fa;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
         }
 
         .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .feature-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .command-item {
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
+        .dark .feature-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
-        .command-item:hover {
-            border-left-color: #3b82f6;
-            background: rgba(59, 130, 246, 0.05);
+        .feature-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(0, 122, 255, 0.3);
+        }
+
+        .theme-toggle {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 4px;
+            display: flex;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .theme-option {
+            padding: 8px 16px;
+            border-radius: 100px;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .theme-option.active {
+            background: var(--primary);
+            color: white;
         }
     </style>
 </head>
-<body class="bg-slate-950 text-white">
+<body class="transition-colors duration-300">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800 z-50">
+    <nav class="fixed top-0 w-full glass border-b border-[var(--border)] z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center gap-3">
-                    <div class="text-3xl">=�</div>
-                    <span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 4L28 12V20L16 28L4 20V12L16 4Z" fill="var(--primary)"/>
+                        <path d="M16 10L22 14V18L16 22L10 18V14L16 10Z" fill="white" opacity="0.8"/>
+                    </svg>
+                    <span class="text-xl font-semibold" style="color: var(--text-primary)">
                         BunVM
                     </span>
                 </div>
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#features" class="hover:text-blue-400 transition">Features</a>
-                    <a href="#install" class="hover:text-blue-400 transition">Install</a>
-                    <a href="#commands" class="hover:text-blue-400 transition">Commands</a>
-                    <a href="#examples" class="hover:text-blue-400 transition">Examples</a>
-                    <a href="https://github.com/privjaac/bunvm" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition">
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#features" class="text-sm font-medium hover:text-[var(--primary)] transition" style="color: var(--text-secondary)">Features</a>
+                    <a href="#install" class="text-sm font-medium hover:text-[var(--primary)] transition" style="color: var(--text-secondary)">Install</a>
+                    <a href="#commands" class="text-sm font-medium hover:text-[var(--primary)] transition" style="color: var(--text-secondary)">Commands</a>
+                    <a href="#examples" class="text-sm font-medium hover:text-[var(--primary)] transition" style="color: var(--text-secondary)">Examples</a>
+                    <div class="theme-toggle" onclick="toggleTheme()">
+                        <div class="theme-option" id="light-toggle">Light</div>
+                        <div class="theme-option active" id="dark-toggle">Dark</div>
+                    </div>
+                    <a href="https://github.com/privjaac/bunvm" target="_blank" class="btn-primary px-4 py-2 rounded-full text-sm font-medium">
                         GitHub
                     </a>
                 </div>
@@ -132,49 +290,50 @@
 
     <!-- Hero Section -->
     <section class="relative pt-32 pb-20 px-4 overflow-hidden">
-        <!-- Animated background -->
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-slate-900 animate-gradient"></div>
-
-        <!-- Grid pattern -->
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20"></div>
+        <div class="absolute inset-0 opacity-30">
+            <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, var(--primary), transparent 70%);"></div>
+        </div>
 
         <div class="relative max-w-7xl mx-auto text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-full mb-8 animate-float">
+            <div class="inline-flex items-center gap-2 px-4 py-2 glass rounded-full mb-8 animate-float">
                 <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background: var(--primary);"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2" style="background: var(--primary);"></span>
                 </span>
-                <span class="text-sm text-blue-300">v1.0.0 - Now with Tab Completion!</span>
+                <!-- <span class="text-sm font-medium" style="color: var(--text-secondary)">v1.0.0 - Now with Tab Completion!</span> -->
+                 <span class="text-sm font-medium" style="color: var(--text-secondary)">With Tab Completion!</span>
             </div>
 
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6" style="color: var(--text-primary)">
                 The Ultimate Bun<br/>Version Manager
             </h1>
 
-            <p class="text-xl md:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto">
+            <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto" style="color: var(--text-secondary)">
                 Fast, simple, and powerful. Manage multiple Bun versions with zero dependencies.
-                <span class="block mt-2 text-blue-400">Better than nvm. Better than sdkman.</span>
+            <!-- <span class="block mt-2" style="color: var(--primary)">Better than nvm. Better than sdkman.</span>  -->
             </p>
 
             <!-- Installation command -->
             <div class="max-w-3xl mx-auto mb-8">
                 <div class="code-block">
                     <div class="code-header">
-                        <div class="code-dot bg-red-500"></div>
-                        <div class="code-dot bg-yellow-500"></div>
-                        <div class="code-dot bg-green-500"></div>
-                        <span class="text-sm text-slate-400">Terminal</span>
+                        <div class="code-dots">
+                            <div class="code-dot" style="background: #ff5f56;"></div>
+                            <div class="code-dot" style="background: #ffbd2e;"></div>
+                            <div class="code-dot" style="background: #27c93f;"></div>
+                            <span class="text-sm font-medium" style="color: var(--text-secondary)">Terminal</span>
+                        </div>
+                        <button class="copy-btn" onclick="copyToClipboard(this, 'curl -fsSL https://install.bunvm.com | bash')">Copy</button>
                     </div>
-                    <button class="copy-btn" onclick="copyToClipboard('curl -fsSL https://install.bunvm.com | bash')">Copy</button>
-                    <pre><code class="text-green-400"><span class="text-blue-400">$</span> curl -fsSL https://install.bunvm.com | bash</code></pre>
+                    <pre><code style="color: var(--text-primary);"><span style="color: var(--primary);">$</span> curl -fsSL https://install.bunvm.com | bash</code></pre>
                 </div>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#install" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold text-lg transition transform hover:scale-105 shadow-lg">
-                    Get Started �
+                <a href="#install" class="btn-primary px-8 py-4 rounded-full font-semibold text-lg shadow-lg">
+                    Get Started
                 </a>
-                <a href="https://github.com/privjaac/bunvm" target="_blank" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 rounded-lg font-semibold text-lg transition border border-slate-700">
+                <a href="https://github.com/privjaac/bunvm" target="_blank" class="glass px-8 py-4 rounded-full font-semibold text-lg" style="color: var(--text-primary)">
                     View on GitHub
                 </a>
             </div>
@@ -182,75 +341,86 @@
             <!-- Stats -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mt-20">
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-blue-400 mb-2">0</div>
-                    <div class="text-sm text-slate-400">Dependencies</div>
+                    <div class="text-5xl font-bold mb-2" style="color: var(--primary)">0</div>
+                    <div class="text-sm" style="color: var(--text-secondary)">Dependencies</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-purple-400 mb-2">&lt;1s</div>
-                    <div class="text-sm text-slate-400">Install Time</div>
+                    <div class="text-5xl font-bold mb-2" style="color: var(--primary)">&lt;1s</div>
+                    <div class="text-sm" style="color: var(--text-secondary)">Install Time</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-pink-400 mb-2"></div>
-                    <div class="text-sm text-slate-400">Versions</div>
+                    <div class="text-5xl font-bold mb-2" style="color: var(--primary)">&#8734;</div>
+                    <div class="text-sm" style="color: var(--text-secondary)">Versions</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-green-400 mb-2">2</div>
-                    <div class="text-sm text-slate-400">Platforms</div>
+                    <div class="text-5xl font-bold mb-2" style="color: var(--primary)">2</div>
+                    <div class="text-sm" style="color: var(--text-secondary)">Platforms</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-20 px-4 bg-slate-900/50">
+    <section id="features" class="py-20 px-4" style="background: var(--bg-secondary)">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">Why Choose BunVM?</h2>
-                <p class="text-xl text-slate-400">Built for developers who demand simplicity and speed</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: var(--text-primary)">Why Choose BunVM?</h2>
+                <p class="text-xl" style="color: var(--text-secondary)">Built for developers who demand simplicity and speed</p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Feature 1 -->
-                <div class="feature-card p-8 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700">
-                    <div class="text-5xl mb-4">�</div>
-                    <h3 class="text-2xl font-bold mb-3 text-blue-400">Lightning Fast</h3>
-                    <p class="text-slate-300">Zero dependencies. Pure shell script. Instant version switching with minimal overhead.</p>
+                <div class="feature-card p-8 rounded-3xl border" style="border-color: var(--border)">
+                    <div class="mb-4">
+                        <i data-lucide="zap" style="width: 48px; height: 48px; color: var(--primary); stroke-width: 2;"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3" style="color: var(--text-primary)">Lightning Fast</h3>
+                    <p style="color: var(--text-secondary)">Zero dependencies. Pure shell script. Instant version switching.</p>
                 </div>
 
                 <!-- Feature 2 -->
-                <div class="feature-card p-8 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700">
-                    <div class="text-5xl mb-4">=</div>
-                    <h3 class="text-2xl font-bold mb-3 text-purple-400">Auto-Switching</h3>
-                    <p class="text-slate-300">Automatically detects .bun-version files. No manual switching needed when changing projects.</p>
+                <div class="feature-card p-8 rounded-3xl border" style="border-color: var(--border)">
+                    <div class="mb-4">
+                        <i data-lucide="bell" style="width: 48px; height: 48px; color: var(--primary); stroke-width: 2;"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3" style="color: var(--text-primary)">Auto-Switching</h3>
+                    <p style="color: var(--text-secondary)">Automatically detects .bun-version files. No manual switching needed.</p>
                 </div>
 
                 <!-- Feature 3 -->
-                <div class="feature-card p-8 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700">
-                    <div class="text-5xl mb-4"><�</div>
-                    <h3 class="text-2xl font-bold mb-3 text-pink-400">Tab Completion</h3>
-                    <p class="text-slate-300">Smart autocompletion for both Bash and Zsh. Just like sdkman, but better.</p>
+                <div class="feature-card p-8 rounded-3xl border" style="border-color: var(--border)">
+                    <div class="mb-4">
+                        <i data-lucide="terminal" style="width: 48px; height: 48px; color: var(--primary); stroke-width: 2;"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3" style="color: var(--text-primary)">Tab Completion</h3>
+                    <p style="color: var(--text-secondary)">Smart autocompletion for both Bash and Zsh.</p>
                 </div>
 
                 <!-- Feature 4 -->
-                <div class="feature-card p-8 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700">
-                    <div class="text-5xl mb-4">=�</div>
-                    <h3 class="text-2xl font-bold mb-3 text-green-400">Multiple Versions</h3>
-                    <p class="text-slate-300">Install and manage unlimited Bun versions. Switch between them instantly.</p>
+                <div class="feature-card p-8 rounded-3xl border" style="border-color: var(--border)">
+                    <div class="mb-4">
+                        <i data-lucide="layers" style="width: 48px; height: 48px; color: var(--primary); stroke-width: 2;"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3" style="color: var(--text-primary)">Multiple Versions</h3>
+                    <p style="color: var(--text-secondary)">Install and manage unlimited Bun versions.</p>
                 </div>
 
                 <!-- Feature 5 -->
-                <div class="feature-card p-8 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700">
-                    <div class="text-5xl mb-4">=</div>
-                    <h3 class="text-2xl font-bold mb-3 text-yellow-400">Version Aliases</h3>
-                    <p class="text-slate-300">Create memorable names for versions. 'stable', 'beta', 'production' - you name it.</p>
+                <div class="feature-card p-8 rounded-3xl border" style="border-color: var(--border)">
+                    <div class="mb-4">
+                        <i data-lucide="link" style="width: 48px; height: 48px; color: var(--primary); stroke-width: 2;"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3" style="color: var(--text-primary)">Version Aliases</h3>
+                    <p style="color: var(--text-secondary)">Create memorable names for versions.</p>
                 </div>
 
                 <!-- Feature 6 -->
-                <div class="feature-card p-8 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700">
-                    <div class="text-5xl mb-4"><
-</div>
-                    <h3 class="text-2xl font-bold mb-3 text-cyan-400">Cross-Platform</h3>
-                    <p class="text-slate-300">Works seamlessly on macOS (Intel & Apple Silicon) and Linux (x64 & ARM64).</p>
+                <div class="feature-card p-8 rounded-3xl border" style="border-color: var(--border)">
+                    <div class="mb-4">
+                        <i data-lucide="globe" style="width: 48px; height: 48px; color: var(--primary); stroke-width: 2;"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3" style="color: var(--text-primary)">Cross-Platform</h3>
+                    <p style="color: var(--text-secondary)">Works seamlessly on macOS and Linux.</p>
                 </div>
             </div>
         </div>
@@ -260,166 +430,117 @@
     <section id="install" class="py-20 px-4">
         <div class="max-w-5xl mx-auto">
             <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">Quick Installation</h2>
-                <p class="text-xl text-slate-400">Get started in seconds</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: var(--text-primary)">Quick Installation</h2>
+                <p class="text-xl" style="color: var(--text-secondary)">Get started in seconds</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- Install -->
-                <div class="bg-slate-900 rounded-2xl p-8 border border-slate-800">
+                <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="text-4xl">=�</div>
-                        <h3 class="text-2xl font-bold">Install</h3>
+                        <i data-lucide="download" style="width: 32px; height: 32px; color: var(--primary); stroke-width: 2;"></i>
+                        <h3 class="text-2xl font-semibold" style="color: var(--text-primary)">Install</h3>
                     </div>
                     <div class="code-block">
                         <div class="code-header">
-                            <div class="code-dot bg-red-500"></div>
-                            <div class="code-dot bg-yellow-500"></div>
-                            <div class="code-dot bg-green-500"></div>
+                            <div class="code-dots">
+                                <div class="code-dot" style="background: #ff5f56;"></div>
+                                <div class="code-dot" style="background: #ffbd2e;"></div>
+                                <div class="code-dot" style="background: #27c93f;"></div>
+                            </div>
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'curl -fsSL https://install.bunvm.com | bash')">Copy</button>
                         </div>
-                        <button class="copy-btn" onclick="copyToClipboard('curl -fsSL https://install.bunvm.com | bash')">Copy</button>
-                        <pre><code class="text-green-400"><span class="text-blue-400">$</span> curl -fsSL https://install.bunvm.com | bash</code></pre>
+                        <pre><code style="color: var(--text-primary);"><span style="color: var(--primary);">$</span> curl -fsSL https://install.bunvm.com | bash</code></pre>
                     </div>
-                    <p class="text-slate-400 mt-4">Installs BunVM to <code class="text-blue-400">~/.bunvm</code> and sets up your shell profile.</p>
+                    <p class="mt-4" style="color: var(--text-secondary)">Installs BunVM to <code style="color: var(--primary)">~/.bunvm</code> and sets up your shell.</p>
                 </div>
 
                 <!-- Uninstall -->
-                <div class="bg-slate-900 rounded-2xl p-8 border border-slate-800">
+                <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="text-4xl">=�</div>
-                        <h3 class="text-2xl font-bold">Uninstall</h3>
+                        <div class="text-3xl">&#128465;</div>
+                        <h3 class="text-2xl font-semibold" style="color: var(--text-primary)">Uninstall</h3>
                     </div>
                     <div class="code-block">
                         <div class="code-header">
-                            <div class="code-dot bg-red-500"></div>
-                            <div class="code-dot bg-yellow-500"></div>
-                            <div class="code-dot bg-green-500"></div>
+                            <div class="code-dots">
+                                <div class="code-dot" style="background: #ff5f56;"></div>
+                                <div class="code-dot" style="background: #ffbd2e;"></div>
+                                <div class="code-dot" style="background: #27c93f;"></div>
+                            </div>
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'curl -fsSL https://uninstall.bunvm.com | bash')">Copy</button>
                         </div>
-                        <button class="copy-btn" onclick="copyToClipboard('curl -fsSL https://uninstall.bunvm.com | bash')">Copy</button>
-                        <pre><code class="text-red-400"><span class="text-blue-400">$</span> curl -fsSL https://uninstall.bunvm.com | bash</code></pre>
+                        <pre><code style="color: var(--text-primary);"><span style="color: var(--primary);">$</span> curl -fsSL https://uninstall.bunvm.com | bash</code></pre>
                     </div>
-                    <p class="text-slate-400 mt-4">Completely removes BunVM and all installed Bun versions.</p>
+                    <p class="mt-4" style="color: var(--text-secondary)">Completely removes BunVM and all installed versions.</p>
                 </div>
             </div>
 
             <!-- First steps -->
-            <div class="mt-12 bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-2xl p-8 border border-blue-500/30">
-                <h3 class="text-2xl font-bold mb-4 flex items-center gap-3">
-                    <span>=�</span>
+            <div class="mt-12 glass rounded-3xl p-8 border" style="border-color: var(--border)">
+                <h3 class="text-2xl font-semibold mb-4 flex items-center gap-3" style="color: var(--text-primary)">
+                    <span>&#128640;</span>
                     First Steps After Installation
                 </h3>
                 <div class="code-block">
-                    <pre><code class="text-slate-300"><span class="text-slate-500"># Install the latest version of Bun</span>
-<span class="text-blue-400">$</span> <span class="text-green-400">bunvm install latest</span>
+                    <pre><code style="color: var(--text-secondary);"><span style="color: var(--text-secondary);"># Install the latest version of Bun</span>
+<span style="color: var(--primary);">$</span> bunvm install latest
 
-<span class="text-slate-500"># Verify installation</span>
-<span class="text-blue-400">$</span> <span class="text-green-400">bun --version</span>
-<span class="text-purple-400">1.3.4</span>
+<span style="color: var(--text-secondary);"># Verify installation</span>
+<span style="color: var(--primary);">$</span> bun --version
+1.3.4
 
-<span class="text-slate-500"># Check current version</span>
-<span class="text-blue-400">$</span> <span class="text-green-400">bunvm current</span>
-<span class="text-green-400"></span> Versi�n actual: 1.3.4</code></pre>
+<span style="color: var(--text-secondary);"># Check current version</span>
+<span style="color: var(--primary);">$</span> bunvm current
+&#10004; Version actual: 1.3.4</code></pre>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Commands Section -->
-    <section id="commands" class="py-20 px-4 bg-slate-900/50">
+    <section id="commands" class="py-20 px-4" style="background: var(--bg-secondary)">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">Essential Commands</h2>
-                <p class="text-xl text-slate-400">Everything you need to manage Bun versions</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: var(--text-primary)">Essential Commands</h2>
+                <p class="text-xl" style="color: var(--text-secondary)">Everything you need to manage Bun versions</p>
             </div>
 
             <div class="grid gap-6">
                 <!-- install -->
-                <div class="command-item bg-slate-900 rounded-xl p-6 border border-slate-800">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
-                        <div>
-                            <code class="text-xl font-mono text-blue-400">bunvm install &lt;version&gt;</code>
-                            <p class="text-slate-400 mt-2">Install a specific version of Bun</p>
-                        </div>
+                <div class="glass rounded-2xl p-6 border transition-all hover:border-[var(--primary)]" style="border-color: var(--border)">
+                    <div class="mb-4">
+                        <code class="text-lg font-mono" style="color: var(--primary)">bunvm install &lt;version&gt;</code>
+                        <p class="mt-2" style="color: var(--text-secondary)">Install a specific version of Bun</p>
                     </div>
                     <div class="code-block mt-4">
-                        <pre><code class="text-slate-300"><span class="text-blue-400">$</span> bunvm install latest
-<span class="text-blue-400">$</span> bunvm install 1.0.25
-<span class="text-blue-400">$</span> bunvm install 1.0.0</code></pre>
+                        <pre><code style="color: var(--text-primary);"><span style="color: var(--primary);">$</span> bunvm install latest
+<span style="color: var(--primary);">$</span> bunvm install 1.0.25</code></pre>
                     </div>
                 </div>
 
                 <!-- use -->
-                <div class="command-item bg-slate-900 rounded-xl p-6 border border-slate-800">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
-                        <div>
-                            <code class="text-xl font-mono text-purple-400">bunvm use &lt;version&gt;</code>
-                            <p class="text-slate-400 mt-2">Switch to a specific version (persists across shells)</p>
-                        </div>
+                <div class="glass rounded-2xl p-6 border transition-all hover:border-[var(--primary)]" style="border-color: var(--border)">
+                    <div class="mb-4">
+                        <code class="text-lg font-mono" style="color: var(--primary)">bunvm use &lt;version&gt;</code>
+                        <p class="mt-2" style="color: var(--text-secondary)">Switch to a specific version (persists across shells)</p>
                     </div>
                     <div class="code-block mt-4">
-                        <pre><code class="text-slate-300"><span class="text-blue-400">$</span> bunvm use 1.0.25
-<span class="text-green-400"></span> Ahora usando Bun 1.0.25
-<span class="text-cyan-400">9</span> Versi�n guardada como default para futuros shells</code></pre>
+                        <pre><code style="color: var(--text-primary);"><span style="color: var(--primary);">$</span> bunvm use 1.0.25
+&#10004; Ahora usando Bun 1.0.25</code></pre>
                     </div>
                 </div>
 
                 <!-- list -->
-                <div class="command-item bg-slate-900 rounded-xl p-6 border border-slate-800">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
-                        <div>
-                            <code class="text-xl font-mono text-green-400">bunvm list [--local]</code>
-                            <p class="text-slate-400 mt-2">List available or installed versions</p>
-                        </div>
+                <div class="glass rounded-2xl p-6 border transition-all hover:border-[var(--primary)]" style="border-color: var(--border)">
+                    <div class="mb-4">
+                        <code class="text-lg font-mono" style="color: var(--primary)">bunvm list [--local]</code>
+                        <p class="mt-2" style="color: var(--text-secondary)">List available or installed versions</p>
                     </div>
                     <div class="code-block mt-4">
-                        <pre><code class="text-slate-300"><span class="text-blue-400">$</span> bunvm list --local
- Version    | Status       | Use | Install Path
---------------------------------------------------------------------------------
- 1.0.25     | installed*   | *   | ~/.bunvm/versions/bun-1.0.25
- 1.0.24     | installed    |     | ~/.bunvm/versions/bun-1.0.24</code></pre>
-                    </div>
-                </div>
-
-                <!-- alias -->
-                <div class="command-item bg-slate-900 rounded-xl p-6 border border-slate-800">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
-                        <div>
-                            <code class="text-xl font-mono text-yellow-400">bunvm alias &lt;name&gt; &lt;version&gt;</code>
-                            <p class="text-slate-400 mt-2">Create memorable aliases for versions</p>
-                        </div>
-                    </div>
-                    <div class="code-block mt-4">
-                        <pre><code class="text-slate-300"><span class="text-blue-400">$</span> bunvm alias stable 1.0.25
-<span class="text-blue-400">$</span> bunvm alias beta 1.1.0
-<span class="text-blue-400">$</span> bunvm use stable</code></pre>
-                    </div>
-                </div>
-
-                <!-- current -->
-                <div class="command-item bg-slate-900 rounded-xl p-6 border border-slate-800">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
-                        <div>
-                            <code class="text-xl font-mono text-pink-400">bunvm current</code>
-                            <p class="text-slate-400 mt-2">Show currently active version</p>
-                        </div>
-                    </div>
-                    <div class="code-block mt-4">
-                        <pre><code class="text-slate-300"><span class="text-blue-400">$</span> bunvm current
-<span class="text-green-400"></span> Versi�n actual: 1.0.25</code></pre>
-                    </div>
-                </div>
-
-                <!-- selfupdate -->
-                <div class="command-item bg-slate-900 rounded-xl p-6 border border-slate-800">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
-                        <div>
-                            <code class="text-xl font-mono text-cyan-400">bunvm selfupdate</code>
-                            <p class="text-slate-400 mt-2">Update BunVM to the latest version</p>
-                        </div>
-                    </div>
-                    <div class="code-block mt-4">
-                        <pre><code class="text-slate-300"><span class="text-blue-400">$</span> bunvm selfupdate
-<span class="text-green-400"></span> BunVM actualizado correctamente.</code></pre>
+                        <pre><code style="color: var(--text-primary);"><span style="color: var(--primary);">$</span> bunvm list --local
+ Version    | Status      | Use | Path
+ 1.0.25     | installed*  | *   | ~/.bunvm/versions/bun-1.0.25</code></pre>
                     </div>
                 </div>
             </div>
@@ -430,81 +551,81 @@
     <section id="examples" class="py-20 px-4">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">Real-World Examples</h2>
-                <p class="text-xl text-slate-400">See BunVM in action</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: var(--text-primary)">Real-World Examples</h2>
+                <p class="text-xl" style="color: var(--text-secondary)">See BunVM in action</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- Example 1 -->
-                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 border border-slate-700">
+                <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl"><�</span>
-                        <h3 class="text-xl font-bold">Multiple Projects</h3>
+                        <span class="text-3xl">&#127919;</span>
+                        <h3 class="text-xl font-semibold" style="color: var(--text-primary)">Multiple Projects</h3>
                     </div>
-                    <p class="text-slate-400 mb-4">Different projects, different Bun versions. No manual switching needed.</p>
+                    <p class="mb-4" style="color: var(--text-secondary)">Different projects, different Bun versions. No manual switching needed.</p>
                     <div class="code-block">
-                        <pre><code class="text-slate-300"><span class="text-slate-500"># Project A</span>
-<span class="text-blue-400">$</span> cd ~/projects/project-a
-<span class="text-blue-400">$</span> echo "1.0.25" > .bun-version
-<span class="text-slate-500"># Auto-switches to 1.0.25! <�</span>
+                        <pre><code style="color: var(--text-secondary);"><span style="color: var(--text-secondary);"># Project A</span>
+<span style="color: var(--primary);">$</span> cd ~/projects/project-a
+<span style="color: var(--primary);">$</span> echo "1.0.25" > .bun-version
+<span style="color: var(--text-secondary);"># Auto-switches to 1.0.25! &#127881;</span>
 
-<span class="text-slate-500"># Project B</span>
-<span class="text-blue-400">$</span> cd ~/projects/project-b
-<span class="text-blue-400">$</span> echo "1.0.20" > .bun-version
-<span class="text-slate-500"># Auto-switches to 1.0.20! <�</span></code></pre>
+<span style="color: var(--text-secondary);"># Project B</span>
+<span style="color: var(--primary);">$</span> cd ~/projects/project-b
+<span style="color: var(--primary);">$</span> echo "1.0.20" > .bun-version
+<span style="color: var(--text-secondary);"># Auto-switches to 1.0.20! &#127881;</span></code></pre>
                     </div>
                 </div>
 
                 <!-- Example 2 -->
-                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 border border-slate-700">
+                <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl">>�</span>
-                        <h3 class="text-xl font-bold">Testing Beta Features</h3>
+                        <span class="text-3xl">&#129514;</span>
+                        <h3 class="text-xl font-semibold" style="color: var(--text-primary)">Testing Beta Features</h3>
                     </div>
-                    <p class="text-slate-400 mb-4">Test new features without breaking your workflow.</p>
+                    <p class="mb-4" style="color: var(--text-secondary)">Test new features without breaking your workflow.</p>
                     <div class="code-block">
-                        <pre><code class="text-slate-300"><span class="text-slate-500"># Setup versions</span>
-<span class="text-blue-400">$</span> bunvm install 1.0.25
-<span class="text-blue-400">$</span> bunvm alias stable 1.0.25
-<span class="text-blue-400">$</span> bunvm install 1.1.0
-<span class="text-blue-400">$</span> bunvm alias beta 1.1.0
+                        <pre><code style="color: var(--text-secondary);"><span style="color: var(--text-secondary);"># Setup versions</span>
+<span style="color: var(--primary);">$</span> bunvm install 1.0.25
+<span style="color: var(--primary);">$</span> bunvm alias stable 1.0.25
+<span style="color: var(--primary);">$</span> bunvm install 1.1.0
+<span style="color: var(--primary);">$</span> bunvm alias beta 1.1.0
 
-<span class="text-slate-500"># Easy switching</span>
-<span class="text-blue-400">$</span> bunvm use beta
-<span class="text-slate-500"># Test features...</span>
-<span class="text-blue-400">$</span> bunvm use stable</code></pre>
+<span style="color: var(--text-secondary);"># Easy switching</span>
+<span style="color: var(--primary);">$</span> bunvm use beta
+<span style="color: var(--text-secondary);"># Test features...</span>
+<span style="color: var(--primary);">$</span> bunvm use stable</code></pre>
                     </div>
                 </div>
 
                 <!-- Example 3 -->
-                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 border border-slate-700">
+                <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl">></span>
-                        <h3 class="text-xl font-bold">Team Collaboration</h3>
+                        <span class="text-3xl">&#129309;</span>
+                        <h3 class="text-xl font-semibold" style="color: var(--text-primary)">Team Collaboration</h3>
                     </div>
-                    <p class="text-slate-400 mb-4">Ensure everyone uses the same Bun version.</p>
+                    <p class="mb-4" style="color: var(--text-secondary)">Ensure everyone uses the same Bun version.</p>
                     <div class="code-block">
-                        <pre><code class="text-slate-300"><span class="text-slate-500"># In your project</span>
-<span class="text-blue-400">$</span> echo "1.0.25" > .bun-version
-<span class="text-blue-400">$</span> git add .bun-version
-<span class="text-blue-400">$</span> git commit -m "Pin Bun version"
+                        <pre><code style="color: var(--text-secondary);"><span style="color: var(--text-secondary);"># In your project</span>
+<span style="color: var(--primary);">$</span> echo "1.0.25" > .bun-version
+<span style="color: var(--primary);">$</span> git add .bun-version
+<span style="color: var(--primary);">$</span> git commit -m "Pin Bun version"
 
-<span class="text-slate-500"># Team members:</span>
-<span class="text-blue-400">$</span> git clone &lt;repo&gt;
-<span class="text-blue-400">$</span> cd &lt;repo&gt;
-<span class="text-slate-500"># BunVM auto-detects version! ></span></code></pre>
+<span style="color: var(--text-secondary);"># Team members:</span>
+<span style="color: var(--primary);">$</span> git clone &lt;repo&gt;
+<span style="color: var(--primary);">$</span> cd &lt;repo&gt;
+<span style="color: var(--text-secondary);"># BunVM auto-detects version! &#129309;</span></code></pre>
                     </div>
                 </div>
 
                 <!-- Example 4 -->
-                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 border border-slate-700">
+                <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl">�</span>
-                        <h3 class="text-xl font-bold">CI/CD Integration</h3>
+                        <span class="text-3xl">&#9881;</span>
+                        <h3 class="text-xl font-semibold" style="color: var(--text-primary)">CI/CD Integration</h3>
                     </div>
-                    <p class="text-slate-400 mb-4">Perfect for GitHub Actions and other CI/CD pipelines.</p>
+                    <p class="mb-4" style="color: var(--text-secondary)">Perfect for GitHub Actions and other CI/CD pipelines.</p>
                     <div class="code-block">
-                        <pre><code class="text-slate-300"><span class="text-slate-500"># .github/workflows/test.yml</span>
+                        <pre><code style="color: var(--text-secondary);"><span style="color: var(--text-secondary);"># .github/workflows/test.yml</span>
 - name: Install BunVM
   run: |
     curl -fsSL https://install.bunvm.com | bash
@@ -522,89 +643,30 @@
         </div>
     </section>
 
-    <!-- Comparison Section -->
-    <section class="py-20 px-4 bg-slate-900/50">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">Why BunVM vs Others?</h2>
-                <p class="text-xl text-slate-400">See the difference for yourself</p>
-            </div>
-
-            <div class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-slate-800/50">
-                            <tr>
-                                <th class="px-6 py-4 text-left">Feature</th>
-                                <th class="px-6 py-4 text-center text-blue-400">BunVM</th>
-                                <th class="px-6 py-4 text-center text-slate-500">Others</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-800">
-                            <tr class="hover:bg-slate-800/30 transition">
-                                <td class="px-6 py-4">Zero Dependencies</td>
-                                <td class="px-6 py-4 text-center text-2xl"></td>
-                                <td class="px-6 py-4 text-center text-2xl">L</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/30 transition">
-                                <td class="px-6 py-4">Auto Version Switching</td>
-                                <td class="px-6 py-4 text-center text-2xl"></td>
-                                <td class="px-6 py-4 text-center text-2xl">�</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/30 transition">
-                                <td class="px-6 py-4">Tab Completion</td>
-                                <td class="px-6 py-4 text-center text-2xl"></td>
-                                <td class="px-6 py-4 text-center text-2xl">�</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/30 transition">
-                                <td class="px-6 py-4">Installation Speed</td>
-                                <td class="px-6 py-4 text-center text-green-400 font-bold">&lt;1s</td>
-                                <td class="px-6 py-4 text-center text-red-400">~10s</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/30 transition">
-                                <td class="px-6 py-4">Self-Updating</td>
-                                <td class="px-6 py-4 text-center text-2xl"></td>
-                                <td class="px-6 py-4 text-center text-2xl">L</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/30 transition">
-                                <td class="px-6 py-4">Cross-Platform</td>
-                                <td class="px-6 py-4 text-center text-2xl"></td>
-                                <td class="px-6 py-4 text-center text-2xl">�</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/30 transition">
-                                <td class="px-6 py-4">Learning Curve</td>
-                                <td class="px-6 py-4 text-center text-green-400 font-bold">Minimal</td>
-                                <td class="px-6 py-4 text-center text-yellow-400">Steep</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- CTA Section -->
-    <section class="py-20 px-4">
+    <section class="py-20 px-4" style="background: var(--bg-secondary)">
         <div class="max-w-4xl mx-auto text-center">
-            <div class="bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-3xl p-12 border border-blue-500/30">
-                <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to Get Started?</h2>
-                <p class="text-xl text-slate-300 mb-8">Join developers who manage Bun versions the smart way</p>
+            <div class="glass rounded-3xl p-12 border" style="border-color: var(--border)">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6" style="color: var(--text-primary)">Ready to Get Started?</h2>
+                <p class="text-xl mb-8" style="color: var(--text-secondary)">Join developers who manage Bun versions the smart way</p>
 
                 <div class="code-block max-w-2xl mx-auto mb-8">
                     <div class="code-header">
-                        <div class="code-dot bg-red-500"></div>
-                        <div class="code-dot bg-yellow-500"></div>
-                        <div class="code-dot bg-green-500"></div>
+                        <div class="code-dots">
+                            <div class="code-dot" style="background: #ff5f56;"></div>
+                            <div class="code-dot" style="background: #ffbd2e;"></div>
+                            <div class="code-dot" style="background: #27c93f;"></div>
+                        </div>
+                        <button class="copy-btn" onclick="copyToClipboard(this, 'curl -fsSL https://install.bunvm.com | bash')">Copy</button>
                     </div>
-                    <button class="copy-btn" onclick="copyToClipboard('curl -fsSL https://install.bunvm.com | bash')">Copy</button>
-                    <pre><code class="text-green-400"><span class="text-blue-400">$</span> curl -fsSL https://install.bunvm.com | bash</code></pre>
+                    <pre><code style="color: var(--text-primary);"><span style="color: var(--primary);">$</span> curl -fsSL https://install.bunvm.com | bash</code></pre>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="https://github.com/privjaac/bunvm" target="_blank" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold text-lg transition transform hover:scale-105">
-                        View on GitHub �
+                    <a href="https://github.com/privjaac/bunvm" target="_blank" class="btn-primary px-8 py-4 rounded-full font-semibold text-lg">
+                        View on GitHub
                     </a>
-                    <a href="https://github.com/privjaac/bunvm#readme" target="_blank" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 rounded-lg font-semibold text-lg transition border border-slate-700">
+                    <a href="https://github.com/privjaac/bunvm#readme" target="_blank" class="glass px-8 py-4 rounded-full font-semibold text-lg border" style="color: var(--text-primary); border-color: var(--border)">
                         Read Documentation
                     </a>
                 </div>
@@ -613,78 +675,98 @@
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-800 py-12 px-4">
+    <footer class="border-t py-12 px-4" style="border-color: var(--border);">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <div class="flex items-center gap-2 mb-4">
-                        <span class="text-2xl">=�</span>
-                        <span class="text-xl font-bold">BunVM</span>
+                        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+                            <path d="M16 4L28 12V20L16 28L4 20V12L16 4Z" fill="var(--primary)"/>
+                        </svg>
+                        <span class="text-lg font-semibold" style="color: var(--text-primary)">BunVM</span>
                     </div>
-                    <p class="text-slate-400">The ultimate Bun version manager.</p>
+                    <p style="color: var(--text-secondary)">The ultimate Bun version manager.</p>
                 </div>
 
                 <div>
-                    <h4 class="font-bold mb-4">Resources</h4>
-                    <ul class="space-y-2 text-slate-400">
-                        <li><a href="https://github.com/privjaac/bunvm" class="hover:text-blue-400 transition">GitHub</a></li>
-                        <li><a href="https://github.com/privjaac/bunvm#readme" class="hover:text-blue-400 transition">Documentation</a></li>
-                        <li><a href="https://github.com/privjaac/bunvm/issues" class="hover:text-blue-400 transition">Report Bug</a></li>
+                    <h4 class="font-semibold mb-4" style="color: var(--text-primary)">Resources</h4>
+                    <ul class="space-y-2" style="color: var(--text-secondary)">
+                        <li><a href="https://github.com/privjaac/bunvm" class="hover:text-[var(--primary)] transition">GitHub</a></li>
+                        <li><a href="https://github.com/privjaac/bunvm#readme" class="hover:text-[var(--primary)] transition">Documentation</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="font-bold mb-4">Community</h4>
-                    <ul class="space-y-2 text-slate-400">
-                        <li><a href="https://github.com/privjaac/bunvm/discussions" class="hover:text-blue-400 transition">Discussions</a></li>
-                        <li><a href="https://github.com/privjaac/bunvm/issues" class="hover:text-blue-400 transition">Issues</a></li>
-                        <li><a href="https://github.com/privjaac/bunvm/pulls" class="hover:text-blue-400 transition">Pull Requests</a></li>
+                    <h4 class="font-semibold mb-4" style="color: var(--text-primary)">Community</h4>
+                    <ul class="space-y-2" style="color: var(--text-secondary)">
+                        <li><a href="https://github.com/privjaac/bunvm/issues" class="hover:text-[var(--primary)] transition">Issues</a></li>
+                        <li><a href="https://github.com/privjaac/bunvm/pulls" class="hover:text-[var(--primary)] transition">Pull Requests</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="font-bold mb-4">Inspired By</h4>
-                    <ul class="space-y-2 text-slate-400">
-                        <li><a href="https://github.com/nvm-sh/nvm" class="hover:text-blue-400 transition">nvm</a></li>
-                        <li><a href="https://github.com/rbenv/rbenv" class="hover:text-blue-400 transition">rbenv</a></li>
-                        <li><a href="https://sdkman.io/" class="hover:text-blue-400 transition">sdkman</a></li>
+                    <h4 class="font-semibold mb-4" style="color: var(--text-primary)">Inspired By</h4>
+                    <ul class="space-y-2" style="color: var(--text-secondary)">
+                        <li><a href="https://github.com/nvm-sh/nvm" class="hover:text-[var(--primary)] transition">nvm</a></li>
+                        <li><a href="https://sdkman.io/" class="hover:text-[var(--primary)] transition">sdkman</a></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="pt-8 border-t border-slate-800 text-center text-slate-400">
-                <p>Made with d for the Bun community | MIT License</p>
-                <p class="mt-2 text-sm">� 2024 BunVM. All rights reserved.</p>
+            <div class="pt-8 border-t text-center" style="border-color: var(--border); color: var(--text-secondary)">
+                <p>Made with &#10084; for the Bun community | By JAAC</p>
+                <p class="mt-2 text-sm">&copy; 2025 BunVM. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Copy to clipboard script -->
+    <!-- Scripts -->
     <script>
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                // Find the button that was clicked
-                const buttons = document.querySelectorAll('.copy-btn');
-                buttons.forEach(btn => {
-                    if (btn.onclick.toString().includes(text)) {
-                        const originalText = btn.textContent;
-                        btn.textContent = 'Copied!';
-                        btn.style.background = 'rgba(34, 197, 94, 0.2)';
-                        btn.style.borderColor = 'rgba(34, 197, 94, 0.5)';
-                        btn.style.color = '#4ade80';
+        // Theme toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
 
-                        setTimeout(() => {
-                            btn.textContent = originalText;
-                            btn.style.background = 'rgba(59, 130, 246, 0.2)';
-                            btn.style.borderColor = 'rgba(59, 130, 246, 0.5)';
-                            btn.style.color = '#60a5fa';
-                        }, 2000);
-                    }
-                });
+            if (isDark) {
+                html.classList.remove('dark');
+                document.getElementById('light-toggle').classList.add('active');
+                document.getElementById('dark-toggle').classList.remove('active');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                document.getElementById('dark-toggle').classList.add('active');
+                document.getElementById('light-toggle').classList.remove('active');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+            document.getElementById('light-toggle').classList.add('active');
+            document.getElementById('dark-toggle').classList.remove('active');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(button, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = 'rgba(34, 197, 94, 0.2)';
+                button.style.borderColor = '#22c55e';
+                button.style.color = '#22c55e';
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                    button.style.borderColor = '';
+                    button.style.color = '';
+                }, 2000);
             });
         }
 
-        // Smooth scroll for navigation links
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
