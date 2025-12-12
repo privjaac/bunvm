@@ -5,7 +5,7 @@ MODE="$1"
 
 bunvm_msg "🔎 Consultando versiones de Bun…"
 
-# Versión actual
+# Versión actual (si existe)
 CURRENT=""
 if [ -f "$BUNVM_ETC/current" ]; then
   CURRENT="$(cat "$BUNVM_ETC/current")"
@@ -16,13 +16,18 @@ fi
 # ---------------------------
 
 get_remote_versions() {
+  # Devuelve la lista de tags bun-vX.Y.Z como X.Y.Z (una por línea)
   curl -fsSL "https://api.github.com/repos/oven-sh/bun/releases" 2>/dev/null \
     | grep '"tag_name"' \
-    | sed 's/.*"bun-v//;s/".*//'
+    | sed 's/.*"bun-v//;s/".*//' 
 }
 
 get_local_versions() {
-  [ -d "$BUNVM_VERSIONS" ] || return 0
+  # Evitar errores en zsh cuando no hay coincidencias
+  if [ ! -d "$BUNVM_VERSIONS" ]; then
+    return
+  fi
+
   find "$BUNVM_VERSIONS" -maxdepth 1 -type d -name 'bun-*' 2>/dev/null \
     | sed 's#.*/bun-##'
 }
@@ -37,6 +42,7 @@ print_header() {
 }
 
 print_row() {
+  # $1 = version, $2 = status, $3 = use, $4 = path
   printf " %-10s | %-12s | %-3s | %s\n" "$1" "$2" "$3" "$4"
 }
 
@@ -46,65 +52,92 @@ print_footer() {
 }
 
 # ---------------------------
-# Load local versions
+# Cargar datos
 # ---------------------------
 
-LOCAL_VERSIONS=()
+LOCAL_VERSIONS_ARRAY=()
 while IFS= read -r v; do
-  [ -n "$v" ] && LOCAL_VERSIONS+=("$v")
+  [ -n "$v" ] && LOCAL_VERSIONS_ARRAY+=("$v")
 done <<EOF
 $(get_local_versions)
 EOF
 
 REMOTE_VERSIONS=""
-[ "$MODE" != "--local" ] && REMOTE_VERSIONS="$(get_remote_versions)"
+if [ "$MODE" != "--local" ]; then
+  REMOTE_VERSIONS="$(get_remote_versions)"
+fi
 
 print_header
 
 # ---------------------------
-# Only local
+# Solo local
 # ---------------------------
 if [ "$MODE" = "--local" ]; then
-  if [ "${#LOCAL_VERSIONS[@]}" -eq 0 ]; then
+  if [ "${#LOCAL_VERSIONS_ARRAY[@]}" -eq 0 ]; then
     bunvm_msg_info "No hay versiones instaladas aún."
     print_footer
-    return 0
+    return 1
   fi
 
-  for VER in "${LOCAL_VERSIONS[@]}"; do
+  for VER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
     STATUS="installed"
     USE=""
-    BIN_PATH="$BUNVM_VERSIONS/bun-$VER"
+    PATH="$BUNVM_VERSIONS/bun-$VER"
 
     if [ "$VER" = "$CURRENT" ]; then
       STATUS="installed*"
       USE="*"
     fi
 
-    print_row "$VER" "$STATUS" "$USE" "$BIN_PATH"
+    print_row "$VER" "$STATUS" "$USE" "$PATH"
   done
 
   print_footer
-  return 0
+  return 1
 fi
 
 # ---------------------------
-# Remote + local
+# Remoto + local
 # ---------------------------
 
-[ -z "$REMOTE_VERSIONS" ] && bunvm_msg_error "No se pudo consultar GitHub."
+if [ -z "$REMOTE_VERSIONS" ]; then
+  bunvm_msg_error "No se pudo obtener la lista remota de versiones desde GitHub."
+  # como fallback mostramos solo locales
+  if [ "${#LOCAL_VERSIONS_ARRAY[@]}" -eq 0 ]; then
+    bunvm_msg_info "Tampoco hay versiones locales instaladas."
+    print_footer
+    return 1
+  fi
 
+  for VER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
+    STATUS="installed"
+    USE=""
+    PATH="$BUNVM_VERSIONS/bun-$VER"
+
+    if [ "$VER" = "$CURRENT" ]; then
+      STATUS="installed*"
+      USE="*"
+    fi
+
+    print_row "$VER" "$STATUS" "$USE" "$PATH"
+  done
+
+  print_footer
+  return 1
+fi
+
+# Recorrer versiones remotas y marcar estado/local/actual
 echo "$REMOTE_VERSIONS" | while IFS= read -r VER; do
   [ -z "$VER" ] && continue
 
   STATUS="available"
   USE=""
-  BIN_PATH="-"
+  PATH="-"
 
-  for LVER in "${LOCAL_VERSIONS[@]}"; do
+  for LVER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
     if [ "$VER" = "$LVER" ]; then
       STATUS="installed"
-      BIN_PATH="$BUNVM_VERSIONS/bun-$VER"
+      PATH="$BUNVM_VERSIONS/bun-$VER"
       break
     fi
   done
@@ -112,10 +145,10 @@ echo "$REMOTE_VERSIONS" | while IFS= read -r VER; do
   if [ "$VER" = "$CURRENT" ]; then
     STATUS="installed*"
     USE="*"
-    BIN_PATH="$BUNVM_VERSIONS/bun-$VER"
+    PATH="$BUNVM_VERSIONS/bun-$VER"
   fi
 
-  print_row "$VER" "$STATUS" "$USE" "$BIN_PATH"
+  print_row "$VER" "$STATUS" "$USE" "$PATH"
 done
 
 print_footer
