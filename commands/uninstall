@@ -3,31 +3,23 @@
 VERSION="$1"
 
 if [ -z "$VERSION" ]; then
-    bunvm_msg_error "Uso: bunvm uninstall <versión>"
-    exit 1
+  bunvm_msg_error "Uso: bunvm uninstall <versión>"
+  return 1
 fi
 
 TARGET="$BUNVM_VERSIONS/bun-$VERSION"
 
 if [ ! -d "$TARGET" ]; then
-    bunvm_msg_error "❌ La versión $VERSION no está instalada."
-    exit 1
+  bunvm_msg_error "La versión $VERSION no está instalada."
+  return 1
 fi
 
 rm -rf "$TARGET"
 
-# limpiar alias que apunten a esa versión
+# limpiar aliases
 if [ -f "$BUNVM_ETC/aliases" ]; then
-    grep -v "=$VERSION" "$BUNVM_ETC/aliases" > "$BUNVM_ETC/aliases.tmp" || true
-    mv "$BUNVM_ETC/aliases.tmp" "$BUNVM_ETC/aliases" 2>/dev/null || true
-fi
-
-# si era la versión actual, limpiar current
-if [ -f "$BUNVM_ETC/current" ]; then
-    CURR="$(cat "$BUNVM_ETC/current")"
-    if [ "$CURR" = "$VERSION" ]; then
-        : > "$BUNVM_ETC/current"
-    fi
+  grep -v "=$VERSION" "$BUNVM_ETC/aliases" > "$BUNVM_ETC/aliases.tmp" || true
+  mv "$BUNVM_ETC/aliases.tmp" "$BUNVM_ETC/aliases" 2>/dev/null || true
 fi
 
 bunvm_msg_success "✔ Bun $VERSION desinstalado."

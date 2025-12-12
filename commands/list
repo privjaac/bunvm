@@ -76,7 +76,7 @@ if [ "$MODE" = "--local" ]; then
   if [ "${#LOCAL_VERSIONS_ARRAY[@]}" -eq 0 ]; then
     bunvm_msg_info "No hay versiones instaladas aún."
     print_footer
-    exit 0
+    return 1
   fi
 
   for VER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
@@ -93,7 +93,7 @@ if [ "$MODE" = "--local" ]; then
   done
 
   print_footer
-  exit 0
+  return 1
 fi
 
 # ---------------------------
@@ -106,7 +106,7 @@ if [ -z "$REMOTE_VERSIONS" ]; then
   if [ "${#LOCAL_VERSIONS_ARRAY[@]}" -eq 0 ]; then
     bunvm_msg_info "Tampoco hay versiones locales instaladas."
     print_footer
-    exit 1
+    return 1
   fi
 
   for VER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
@@ -123,7 +123,7 @@ if [ -z "$REMOTE_VERSIONS" ]; then
   done
 
   print_footer
-  exit 0
+  return 1
 fi
 
 # Recorrer versiones remotas y marcar estado/local/actual

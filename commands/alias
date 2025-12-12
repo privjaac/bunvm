@@ -4,20 +4,20 @@ NAME="$1"
 VERSION="$2"
 
 if [ -z "$NAME" ] || [ -z "$VERSION" ]; then
-    bunvm_msg_error "Uso: bunvm alias <nombre> <versión>"
-    exit 1
+  bunvm_msg_error "Uso: bunvm alias <nombre> <versión>"
+  return 1
 fi
 
-# opcional: verificar que la versión exista
+# verificar que la versión exista
 if [ ! -d "$BUNVM_VERSIONS/bun-$VERSION" ]; then
-    bunvm_msg_error "La versión $VERSION no está instalada. Instálala antes de crear el alias."
-    exit 1
+  bunvm_msg_error "La versión $VERSION no está instalada. Instálala antes de crear el alias."
+  return 1
 fi
 
-# eliminar alias previo con mismo nombre si existe
+# eliminar alias previo con mismo nombre
 if [ -f "$BUNVM_ETC/aliases" ]; then
-    grep -v "^$NAME=" "$BUNVM_ETC/aliases" > "$BUNVM_ETC/aliases.tmp" || true
-    mv "$BUNVM_ETC/aliases.tmp" "$BUNVM_ETC/aliases" 2>/dev/null || true
+  grep -v "^$NAME=" "$BUNVM_ETC/aliases" > "$BUNVM_ETC/aliases.tmp" || true
+  mv "$BUNVM_ETC/aliases.tmp" "$BUNVM_ETC/aliases" 2>/dev/null || true
 fi
 
 echo "$NAME=$VERSION" >> "$BUNVM_ETC/aliases"

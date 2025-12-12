@@ -25,7 +25,7 @@ for LIB in detect_platform fetch_version messages validate; do
   if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/lib/$LIB" \
     -o "$BUNVM_DIR/lib/$LIB"; then
     bunvm_msg_error "❌ No se pudo actualizar librería: $LIB"
-    exit 1
+    return 1
   fi
   chmod +x "$BUNVM_DIR/lib/$LIB"
 done
@@ -34,7 +34,7 @@ done
 if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/autoenv.sh" \
   -o "$BUNVM_DIR/autoload/autoenv.sh"; then
   bunvm_msg_error "❌ No se pudo actualizar autoenv.sh"
-  exit 1
+  return 1
 fi
 chmod +x "$BUNVM_DIR/autoload/autoenv.sh"
 
