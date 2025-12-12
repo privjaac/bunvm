@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 
 set -e
-
 export BUNVM_DIR="${BUNVM_DIR:-$HOME/.bunvm}"
-
 echo "🔧 Instalando BunVM en: $BUNVM_DIR"
-
 mkdir -p "$BUNVM_DIR"
 mkdir -p "$BUNVM_DIR/commands" "$BUNVM_DIR/autoload" "$BUNVM_DIR/lib" "$BUNVM_DIR/versions" "$BUNVM_DIR/etc" "$BUNVM_DIR/tmp"
 
@@ -61,8 +58,21 @@ fi
 
 echo ""
 echo "🎉 BunVM instalado correctamente."
+echo "🔄 Cargando configuración sin reiniciar la terminal..."
+
+# Recargar entorno
+if [ -f "$PROFILE" ]; then
+  set +e
+  . "$PROFILE"
+  set -e
+fi
+
+echo ""
+echo "🎉 BunVM instalado correctamente."
 echo "➡ Reinicia la terminal o ejecuta: source $PROFILE"
 echo ""
 echo "Ejemplo:"
 echo "  bunvm install 1.0.0"
 echo "  bunvm use 1.0.0"
+echo "  bun --version"
+echo ""
