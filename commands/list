@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+bunvm_msg "📦 Versiones instaladas:"
+
+CURRENT=""
+if [ -f "$BUNVM_ETC/current" ]; then
+    CURRENT="$(cat "$BUNVM_ETC/current")"
+fi
+
+if [ ! -d "$BUNVM_VERSIONS" ]; then
+    bunvm_msg_info "No hay versiones instaladas aún."
+    exit 0
+fi
+
+FOUND=false
+
+for v in "$BUNVM_VERSIONS"/bun-*; do
+    [ -d "$v" ] || continue
+    FOUND=true
+    VER="$(basename "$v" | sed 's/^bun-//')"
+    if [ "$VER" = "$CURRENT" ]; then
+        echo " * $VER (actual)"
+    else
+        echo "   $VER"
+    fi
+done
+
+if [ "$FOUND" = false ]; then
+    bunvm_msg_info "No hay versiones instaladas aún."
+fi

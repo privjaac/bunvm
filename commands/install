@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+VERSION="$1"
+
+if [ -z "$VERSION" ]; then
+    bunvm_msg_error "Debes especificar una versión. Ej: bunvm install 1.0.2 o bunvm install latest"
+    exit 1
+fi
+
+if [ "$VERSION" = "latest" ]; then
+    if command -v bunvm_fetch_latest >/dev/null 2>&1; then
+        VERSION="$(bunvm_fetch_latest)"
+        if [ -z "$VERSION" ]; then
+            bunvm_msg_error "No se pudo obtener la última versión desde GitHub."
+            exit 1
+        fi
+        bunvm_msg_info "Usando última versión: $VERSION"
+    else
+        bunvm_msg_error "fetch_version no disponible para 'latest'."
+        exit 1
+    fi
+fi
+
+PLATFORM="$(bunvm_detect_platform)" || exit 1
+TARGET="$BUNVM_VERSIONS/bun-$VERSION"
+
+if [ -d "$TARGET" ]; then
+    bunvm_msg_info "✔ Bun $VERSION ya está instalado."
+    exit 0
+fi
+
+mkdir -p "$TARGET/bin"
+mkdir -p "$BUNVM_DIR/tmp"
+
+ZIP="$BUNVM_DIR/tmp/bun-$VERSION.zip"
+URL="https://github.com/oven-sh/bun/releases/download/bun-v$VERSION/bun-$PLATFORM.zip"
+
+bunvm_msg "🚀 Instalando Bun $VERSION ($PLATFORM)…"
+
+if ! curl -fsSL "$URL" -o "$ZIP"; then
+    bunvm_msg_error "❌ No se pudo descargar $URL"
+    rm -f "$ZIP"
+    exit 1
+fi
+
+mkdir -p "$TARGET/tmp"
+if ! unzip -qo "$ZIP" -d "$TARGET/tmp"; then
+    bunvm_msg_error "❌ No se pudo descomprimir el archivo ZIP."
+    rm -f "$ZIP"
+    rm -rf "$TARGET/tmp"
+    exit 1
+fi
+
+rm -f "$ZIP"
+
+# buscar el ejecutable 'bun' en cualquier profundidad
+BINARY="$(find "$TARGET/tmp" -type f -name 'bun' 2>/dev/null | head -n 1)"
+
+if [ -z "$BINARY" ]; then
+    bunvm_msg_error "❌ No se encontró ningún ejecutable 'bun' en el ZIP."
+    rm -rf "$TARGET/tmp"
+    exit 1
+fi
+
+mv "$BINARY" "$TARGET/bin/bun"
+chmod +x "$TARGET/bin/bun"
+rm -rf "$TARGET/tmp"
+
+bunvm_msg_success "✔ Bun $VERSION instalado correctamente"
+bunvm_msg_info "Actívalo con: bunvm use $VERSION"
