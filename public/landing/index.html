@@ -12,6 +12,7 @@
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
     <!-- Custom animations and styles -->
     <style>
@@ -50,87 +51,43 @@
             border: 1px solid var(--glass-border);
         }
 
-        /* Liquid Glass Header - Apple Style */
+        /* Liquid Glass Header - Apple Style Refined */
         nav.glass {
-            background: linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0.8) 0%,
-                rgba(255, 255, 255, 0.6) 100%
-            );
-            backdrop-filter: blur(60px) saturate(200%) brightness(105%);
-            -webkit-backdrop-filter: blur(60px) saturate(200%) brightness(105%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow:
-                0 1px 0 0 rgba(255, 255, 255, 0.4) inset,
-                0 1px 3px 0 rgba(0, 0, 0, 0.05),
-                0 8px 32px -8px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
             position: relative;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        nav.glass::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0.8) 20%,
-                rgba(255, 255, 255, 0.8) 80%,
-                transparent 100%
-            );
-            opacity: 0.5;
-        }
-
         .dark nav.glass {
-            background: linear-gradient(
-                135deg,
-                rgba(20, 20, 22, 0.85) 0%,
-                rgba(28, 28, 30, 0.75) 100%
-            );
-            backdrop-filter: blur(60px) saturate(200%) brightness(120%);
-            -webkit-backdrop-filter: blur(60px) saturate(200%) brightness(120%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow:
-                0 1px 0 0 rgba(255, 255, 255, 0.08) inset,
-                0 1px 3px 0 rgba(0, 0, 0, 0.3),
-                0 8px 32px -8px rgba(0, 0, 0, 0.5);
+            background: rgba(22, 22, 24, 0.72);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .dark nav.glass::before {
-            background: linear-gradient(
-                90deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0.15) 20%,
-                rgba(255, 255, 255, 0.15) 80%,
-                transparent 100%
-            );
-        }
-
-        /* Hover effect on nav links */
+        /* Hover effect on nav links - TabButton Style */
         nav a {
             position: relative;
+            padding: 6px 12px;
+            border-radius: 8px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        nav a::before {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transform: translateX(-50%);
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 2px;
+        nav a:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--primary) !important;
         }
 
-        nav a:hover::before {
-            width: 100%;
+        .dark nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Active/Current tab indicator effect */
+        nav a::after {
+            display: none;
         }
 
         @keyframes float {
@@ -458,7 +415,7 @@
                 <!-- Uninstall -->
                 <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="text-3xl">&#128465;</div>
+                        <i data-lucide="trash-2" class="w-8 h-8 text-[var(--primary)]"></i>
                         <h3 class="text-2xl font-semibold" style="color: var(--text-primary)">Uninstall</h3>
                     </div>
                     <div class="code-block">
@@ -479,7 +436,7 @@
             <!-- First steps -->
             <div class="mt-12 glass rounded-3xl p-8 border" style="border-color: var(--border)">
                 <h3 class="text-2xl font-semibold mb-4 flex items-center gap-3" style="color: var(--text-primary)">
-                    <span>&#128640;</span>
+                    <i data-lucide="rocket" class="w-6 h-6 text-[var(--primary)]"></i>
                     First Steps After Installation
                 </h3>
                 <div class="code-block">
@@ -492,7 +449,7 @@
 
 <span style="color: var(--text-secondary);"># Check current version</span>
 <span style="color: var(--primary);">$</span> bunvm current
-&#10004; Version actual: 1.3.4</code></pre>
+✓ Version actual: 1.3.4</code></pre>
                 </div>
             </div>
         </div>
@@ -527,7 +484,7 @@
                     </div>
                     <div class="code-block mt-4">
                         <pre><code style="color: var(--text-primary);"><span style="color: var(--primary);">$</span> bunvm use 1.0.25
-&#10004; Ahora usando Bun 1.0.25</code></pre>
+✓ Ahora usando Bun 1.0.25</code></pre>
                     </div>
                 </div>
 
@@ -559,7 +516,7 @@
                 <!-- Example 1 -->
                 <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl">&#127919;</span>
+                        <i data-lucide="target" class="w-8 h-8 text-[var(--primary)]"></i>
                         <h3 class="text-xl font-semibold" style="color: var(--text-primary)">Multiple Projects</h3>
                     </div>
                     <p class="mb-4" style="color: var(--text-secondary)">Different projects, different Bun versions. No manual switching needed.</p>
@@ -579,7 +536,7 @@
                 <!-- Example 2 -->
                 <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl">&#129514;</span>
+                        <i data-lucide="flask-conical" class="w-8 h-8 text-[var(--primary)]"></i>
                         <h3 class="text-xl font-semibold" style="color: var(--text-primary)">Testing Beta Features</h3>
                     </div>
                     <p class="mb-4" style="color: var(--text-secondary)">Test new features without breaking your workflow.</p>
@@ -600,7 +557,7 @@
                 <!-- Example 3 -->
                 <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl">&#129309;</span>
+                        <i data-lucide="users" class="w-8 h-8 text-[var(--primary)]"></i>
                         <h3 class="text-xl font-semibold" style="color: var(--text-primary)">Team Collaboration</h3>
                     </div>
                     <p class="mb-4" style="color: var(--text-secondary)">Ensure everyone uses the same Bun version.</p>
@@ -620,7 +577,7 @@
                 <!-- Example 4 -->
                 <div class="glass rounded-3xl p-8 border" style="border-color: var(--border)">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl">&#9881;</span>
+                        <i data-lucide="settings" class="w-8 h-8 text-[var(--primary)]"></i>
                         <h3 class="text-xl font-semibold" style="color: var(--text-primary)">CI/CD Integration</h3>
                     </div>
                     <p class="mb-4" style="color: var(--text-secondary)">Perfect for GitHub Actions and other CI/CD pipelines.</p>
@@ -714,7 +671,7 @@
             </div>
 
             <div class="pt-8 border-t text-center" style="border-color: var(--border); color: var(--text-secondary)">
-                <p>Made with &#10084; for the Bun community | By JAAC</p>
+                <p class="flex items-center justify-center gap-1">Made with <i data-lucide="heart" class="w-4 h-4 text-red-500 fill-current"></i> for the Bun community | By JAAC</p>
                 <p class="mt-2 text-sm">&copy; 2025 BunVM. All rights reserved.</p>
             </div>
         </div>
@@ -722,6 +679,9 @@
 
     <!-- Scripts -->
     <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
         // Theme toggle
         function toggleTheme() {
             const html = document.documentElement;
