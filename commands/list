@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-# --- Colores ANSI ---
-GREEN="\033[32m"
-BLUE="\033[34m"
-YELLOW="\033[33m"
-RESET="\033[0m"
-
 MODE="$1"
 
 bunvm_msg "🔎 Consultando versiones de Bun…"
@@ -16,32 +10,33 @@ if [ -f "$BUNVM_ETC/current" ]; then
     CURRENT=$(cat "$BUNVM_ETC/current")
 fi
 
-# Obtener releases remotos
+# Obtener releases remotos desde GitHub
 get_remote_versions() {
   curl -fsSL "https://api.github.com/repos/oven-sh/bun/releases" \
     | grep '"tag_name"' \
     | sed 's/.*"bun-v//;s/".*//'
 }
 
-# Obtener locales
+# Obtener versiones instaladas localmente
 get_local_versions() {
   for v in "$BUNVM_VERSIONS"/bun-*; do
     [ -d "$v" ] && basename "$v" | sed 's/^bun-//'
   done
 }
 
+LOCAL_VERSIONS_ARRAY=($(get_local_versions))
 REMOTE_VERSIONS=""
-LOCAL_VERSIONS=""
+
+# Si no es --local, también consultamos remoto
 if [ "$MODE" != "--local" ]; then
   REMOTE_VERSIONS=$(get_remote_versions)
 fi
-LOCAL_VERSIONS_ARRAY=($(get_local_versions))
 
 bunvm_msg ""
 bunvm_msg "================================================================================"
 bunvm_msg " Available Bun Versions"
 bunvm_msg "================================================================================"
-printf " %-10s | %-14s | %-3s | %s\n" "Version" "Status" "Use" "Path"
+printf " %-10s | %-12s | %-3s | %s\n" "Version" "Status" "Use" "Path"
 bunvm_msg "--------------------------------------------------------------------------------"
 
 print_row() {
@@ -49,56 +44,57 @@ print_row() {
   local STATUS="$2"
   local USE="$3"
   local PATH="$4"
-  local COLOR="$5"
 
-  printf "${COLOR} %-10s | %-14s | %-3s | %s ${RESET}\n" "$VER" "$STATUS" "$USE" "$PATH"
+  printf " %-10s | %-12s | %-3s | %s\n" "$VER" "$STATUS" "$USE" "$PATH"
 }
 
-# Mezclar lista remota + local
+#
+# SOLO LOCAL
+#
 if [ "$MODE" = "--local" ]; then
-    # SOLO LOCAL
     for VER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
-        USE=""
-        COLOR="$GREEN"
         STATUS="installed"
+        USE="-"
         PATH="$BUNVM_VERSIONS/bun-$VER"
 
         if [ "$VER" = "$CURRENT" ]; then
-            USE="👉"
             STATUS="installed*"
-            COLOR="$YELLOW"
+            USE="👉"
         fi
 
-        print_row "$VER" "$STATUS" "$USE" "$PATH" "$COLOR"
+        print_row "$VER" "$STATUS" "$USE" "$PATH"
     done
 
-else
-    # REMOTO + LOCAL TOGETHER
-    for VER in $REMOTE_VERSIONS; do
-        USE=""
-        PATH="-"
-        COLOR="$BLUE"
-        STATUS="available"
+    bunvm_msg "--------------------------------------------------------------------------------"
+    bunvm_msg "👉 indicates the version currently in use."
+    exit 0
+fi
 
-        # ¿Está instalado?
-        for LVER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
-            if [ "$VER" = "$LVER" ]; then
-                STATUS="installed"
-                COLOR="$GREEN"
-                PATH="$BUNVM_VERSIONS/bun-$VER"
-            fi
-        done
+#
+# REMOTO + LOCAL (similar a SDKMAN)
+#
+for VER in $REMOTE_VERSIONS; do
+    STATUS="available"
+    USE="-"
+    PATH="-"
 
-        if [ "$VER" = "$CURRENT" ]; then
-            STATUS="installed*"
-            COLOR="$YELLOW"
-            USE="👉"
+    # verificar si está instalada
+    for LVER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
+        if [ "$VER" = "$LVER" ]; then
+            STATUS="installed"
             PATH="$BUNVM_VERSIONS/bun-$VER"
         fi
-
-        print_row "$VER" "$STATUS" "$USE" "$PATH" "$COLOR"
     done
-fi
+
+    # marcar actual
+    if [ "$VER" = "$CURRENT" ]; then
+        STATUS="installed*"
+        USE="👉"
+        PATH="$BUNVM_VERSIONS/bun-$VER"
+    fi
+
+    print_row "$VER" "$STATUS" "$USE" "$PATH"
+done
 
 bunvm_msg "--------------------------------------------------------------------------------"
 bunvm_msg "👉 indicates the version currently in use."
