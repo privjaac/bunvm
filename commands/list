@@ -37,12 +37,12 @@ print_header() {
   bunvm_msg "================================================================================"
   bunvm_msg " Available Bun Versions"
   bunvm_msg "================================================================================"
-  printf " %-10s | %-12s | %-3s | %s\n" "Version" "Status" "Use" "Path"
+  printf " %-10s | %-12s | %-3s | %s\n" "Version" "Status" "Use" "Install Path"
   bunvm_msg "--------------------------------------------------------------------------------"
 }
 
 print_row() {
-  # $1 = version, $2 = status, $3 = use, $4 = path
+  # $1 = version, $2 = status, $3 = use, $4 = install_path
   printf " %-10s | %-12s | %-3s | %s\n" "$1" "$2" "$3" "$4"
 }
 
@@ -76,24 +76,24 @@ if [ "$MODE" = "--local" ]; then
   if [ "${#LOCAL_VERSIONS_ARRAY[@]}" -eq 0 ]; then
     bunvm_msg_info "No hay versiones instaladas aún."
     print_footer
-    return 1
+    return 0
   fi
 
   for VER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
     STATUS="installed"
     USE=""
-    PATH="$BUNVM_VERSIONS/bun-$VER"
+    INSTALL_PATH="$BUNVM_VERSIONS/bun-$VER"
 
     if [ "$VER" = "$CURRENT" ]; then
       STATUS="installed*"
       USE="*"
     fi
 
-    print_row "$VER" "$STATUS" "$USE" "$PATH"
+    print_row "$VER" "$STATUS" "$USE" "$INSTALL_PATH"
   done
 
   print_footer
-  return 1
+  return 0
 fi
 
 # ---------------------------
@@ -112,18 +112,18 @@ if [ -z "$REMOTE_VERSIONS" ]; then
   for VER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
     STATUS="installed"
     USE=""
-    PATH="$BUNVM_VERSIONS/bun-$VER"
+    INSTALL_PATH="$BUNVM_VERSIONS/bun-$VER"
 
     if [ "$VER" = "$CURRENT" ]; then
       STATUS="installed*"
       USE="*"
     fi
 
-    print_row "$VER" "$STATUS" "$USE" "$PATH"
+    print_row "$VER" "$STATUS" "$USE" "$INSTALL_PATH"
   done
 
   print_footer
-  return 1
+  return 0
 fi
 
 # Recorrer versiones remotas y marcar estado/local/actual
@@ -132,12 +132,12 @@ echo "$REMOTE_VERSIONS" | while IFS= read -r VER; do
 
   STATUS="available"
   USE=""
-  PATH="-"
+  INSTALL_PATH="-"
 
   for LVER in "${LOCAL_VERSIONS_ARRAY[@]}"; do
     if [ "$VER" = "$LVER" ]; then
       STATUS="installed"
-      PATH="$BUNVM_VERSIONS/bun-$VER"
+      INSTALL_PATH="$BUNVM_VERSIONS/bun-$VER"
       break
     fi
   done
@@ -145,10 +145,10 @@ echo "$REMOTE_VERSIONS" | while IFS= read -r VER; do
   if [ "$VER" = "$CURRENT" ]; then
     STATUS="installed*"
     USE="*"
-    PATH="$BUNVM_VERSIONS/bun-$VER"
+    INSTALL_PATH="$BUNVM_VERSIONS/bun-$VER"
   fi
 
-  print_row "$VER" "$STATUS" "$USE" "$PATH"
+  print_row "$VER" "$STATUS" "$USE" "$INSTALL_PATH"
 done
 
 print_footer

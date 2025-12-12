@@ -4,8 +4,8 @@ bunvm_detect_platform() {
   local K
   local A
 
-  K="$(uname -s)"
-  A="$(uname -m)"
+  K="$(/usr/bin/uname -s)"
+  A="$(/usr/bin/uname -m)"
 
   case "$K" in
     Linux)

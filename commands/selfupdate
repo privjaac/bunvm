@@ -6,7 +6,7 @@ bunvm_msg "🔄 Actualizando BunVM…"
 if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/bunvm.sh" \
   -o "$BUNVM_DIR/bunvm.sh"; then
   bunvm_msg_error "❌ No se pudo actualizar bunvm.sh"
-  exit 1
+  return 1
 fi
 chmod +x "$BUNVM_DIR/bunvm.sh"
 
@@ -15,7 +15,7 @@ for CMD in install uninstall use list current alias selfupdate; do
   if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/commands/$CMD" \
     -o "$BUNVM_DIR/commands/$CMD"; then
     bunvm_msg_error "❌ No se pudo actualizar comando: $CMD"
-    exit 1
+    return 1
   fi
   chmod +x "$BUNVM_DIR/commands/$CMD"
 done
