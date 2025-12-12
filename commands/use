@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+VERSION="$1"
+
+if [ -z "$VERSION" ]; then
+    bunvm_msg_error "Uso: bunvm use <versión | alias>"
+    exit 1
+fi
+
+# resolver alias si existe
+if [ -f "$BUNVM_ETC/aliases" ]; then
+    # buscar línea EXACTA alias=valor
+    MATCH="$(grep -E "^$VERSION=" "$BUNVM_ETC/aliases" 2>/dev/null | head -n 1 || true)"
+    if [ -n "$MATCH" ]; then
+        VERSION="${MATCH#*=}"
+    fi
+fi
+
+TARGET="$BUNVM_VERSIONS/bun-$VERSION"
+
+if [ ! -d "$TARGET" ]; then
+    bunvm_msg_error "❌ La versión $VERSION no está instalada."
+    exit 1
+fi
+
+if [ ! -f "$TARGET/bin/bun" ]; then
+    bunvm_msg_error "❌ Instalación corrupta: falta $TARGET/bin/bun"
+    exit 1
+fi
+
+echo "$VERSION" > "$BUNVM_ETC/current"
+
+# evitar duplicados en PATH
+case ":$PATH:" in
+    *":$TARGET/bin:"*) ;;
+    *) export PATH="$TARGET/bin:$PATH" ;;
+esac
+
+bunvm_msg_success "✔ Ahora usando Bun $VERSION"
