@@ -34,6 +34,9 @@
     <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"BunVM","url":"https://bunvm.com/","description":"Manage multiple Bun versions with zero dependencies, auto-switching, and tab completion.","applicationCategory":"DeveloperApplication","operatingSystem":"macOS, Linux","downloadUrl":"https://install.bunvm.com","brand":{"@type":"Brand","name":"BunVM"},"sameAs":["https://github.com/privjaac/bunvm"],"logo":"https://icon.icepanel.io/Technology/svg/Bun.svg"}
     </script>
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is BunVM?","acceptedAnswer":{"@type":"Answer","text":"BunVM is a lightweight version manager for Bun focusing on speed, simplicity and zero external dependencies. It helps developers install, switch and manage Bun versions reliably."}},{"@type":"Question","name":"How does auto-switching work?","acceptedAnswer":{"@type":"Answer","text":"BunVM reads a .bun-version file in your project and automatically switches to the specified version when you enter the directory. Leaving the directory restores the previous version."}},{"@type":"Question","name":"Does BunVM require sudo?","acceptedAnswer":{"@type":"Answer","text":"No. BunVM runs in the user home directory and updates shell configuration files when needed without elevated privileges."}},{"@type":"Question","name":"Is BunVM cross-platform?","acceptedAnswer":{"@type":"Answer","text":"Yes. BunVM supports macOS and Linux with consistent installation and version switching behavior."}},{"@type":"Question","name":"What are version aliases?","acceptedAnswer":{"@type":"Answer","text":"Aliases let you assign names to versions, such as stable or beta, so you can switch quickly without remembering exact version numbers."}},{"@type":"Question","name":"Can I use BunVM in CI?","acceptedAnswer":{"@type":"Answer","text":"Yes. BunVM is ideal for CI/CD pipelines. Use the install script and your project .bun-version to pin versions during builds and tests."}},{"@type":"Question","name":"Does BunVM provide shell completion?","acceptedAnswer":{"@type":"Answer","text":"Yes. BunVM offers autocompletion for Bash and Zsh to help discover commands and versions faster."}},{"@type":"Question","name":"How do I uninstall BunVM?","acceptedAnswer":{"@type":"Answer","text":"Run curl -fsSL https://uninstall.bunvm.com | bash to remove BunVM and all installed versions from your system."}}]}
+    </script>
 
     <!-- Custom animations and styles -->
     <style>
@@ -96,6 +99,7 @@
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid var(--glass-border);
+            overflow: hidden;
         }
 
         /* Liquid Glass Header - Floating Apple Style */
@@ -255,6 +259,72 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
+        .faq-grid {
+            align-items: start;
+        }
+        .faq-item {
+            overflow: hidden;
+        }
+        .faq-item summary {
+            list-style: none;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary i {
+            transition: transform 0.2s ease;
+        }
+        .faq-item[open] summary i {
+            transform: rotate(180deg);
+        }
+        .faq-content {
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+        .faq-item[open] .faq-content {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .menu-panel {
+            position: fixed;
+            top: 96px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 24px;
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
+            z-index: 1001;
+        }
+        .menu-panel.open {
+            max-height: 500px;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        @media (max-width: 640px) {
+            .menu-panel {
+                top: 88px;
+                width: calc(100% - 32px);
+            }
+        }
+        #menu-toggle {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        #menu-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        #menu-toggle.active {
+            outline: 2px solid var(--primary);
+            box-shadow: 0 12px 32px rgba(0, 122, 255, 0.25);
+        }
+
         .btn-primary {
             background: var(--primary);
             color: white;
@@ -262,8 +332,8 @@
         }
 
         .btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 24px rgba(0, 122, 255, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 122, 255, 0.25);
+            filter: brightness(1.03);
         }
 
         .theme-toggle {
@@ -301,11 +371,12 @@
                         BunVM
                     </span>
                 </div>
-                <div class="hidden md:flex items-center gap-6">
+                <div class="hidden xl:flex items-center gap-6">
                     <a href="#features" class="text-sm font-medium hover:text-[var(--primary)] transition" style="color: var(--text-secondary)">Features</a>
                     <a href="#install" class="text-sm font-medium hover:text-[var(--primary)] transition" style="color: var(--text-secondary)">Install</a>
                     <a href="#commands" class="text-sm font-medium hover:text-[var(--primary)] transition" style="color: var(--text-secondary)">Commands</a>
                     <a href="#examples" class="text-sm font-medium hover:text-[var(--primary)] transition" style="color: var(--text-secondary)">Examples</a>
+                    <a href="#faq" class="text-sm font-medium hover:text-[var(--primary)] transition" style="color: var(--text-secondary)">FAQ</a>
                     <div class="theme-toggle" onclick="toggleTheme()">
                         <div class="theme-option" id="light-toggle">Light</div>
                         <div class="theme-option active" id="dark-toggle">Dark</div>
@@ -314,8 +385,22 @@
                         GitHub
                     </a>
                 </div>
+                <div id="nav-toggle" class="xl:hidden p-2 rounded-full glass border cursor-pointer flex items-center justify-center" aria-label="Open menu" aria-expanded="false" aria-controls="nav-panel" style="z-index: 1002;">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </div>
             </div>
     </nav>
+    <div id="nav-panel" class="menu-panel glass border">
+        <div class="p-4 flex flex-col gap-3">
+            <a href="#features" class="text-base font-medium" style="color: var(--text-primary)">Features</a>
+            <a href="#install" class="text-base font-medium" style="color: var(--text-primary)">Install</a>
+            <a href="#commands" class="text-base font-medium" style="color: var(--text-primary)">Commands</a>
+            <a href="#examples" class="text-base font-medium" style="color: var(--text-primary)">Examples</a>
+            <a href="#faq" class="text-base font-medium" style="color: var(--text-primary)">FAQ</a>
+            <button onclick="toggleTheme()" class="glass px-4 py-2 rounded-full text-sm border mt-2" style="color: var(--text-primary); border-color: var(--border)">Toggle Theme</button>
+            <a href="https://github.com/privjaac/bunvm" target="_blank" rel="noopener noreferrer" class="btn-primary px-4 py-2 rounded-full text-sm font-medium mt-2">GitHub</a>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="relative pt-32 pb-20 px-4 overflow-hidden">
@@ -672,6 +757,89 @@
         </div>
     </section>
 
+    <section id="faq" class="py-20 px-4" style="background: var(--bg-secondary)">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: var(--text-primary)">FAQ</h2>
+                <p class="text-xl" style="color: var(--text-secondary)">Answers to common questions about BunVM</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 items-start faq-grid">
+                <details class="faq-item glass rounded-3xl p-6 border" style="border-color: var(--border)">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="text-lg font-semibold" style="color: var(--text-primary)">What is BunVM?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-[var(--text-secondary)]"></i>
+                    </summary>
+                    <div class="faq-content mt-3" style="color: var(--text-secondary)">
+                        BunVM is a lightweight version manager for Bun. It focuses on speed, simplicity, and zero external dependencies, making it ideal for developer machines and CI.
+                    </div>
+                </details>
+                <details class="faq-item glass rounded-3xl p-6 border" style="border-color: var(--border)">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="text-lg font-semibold" style="color: var(--text-primary)">How does auto-switching work?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-[var(--text-secondary)]"></i>
+                    </summary>
+                    <div class="faq-content mt-3" style="color: var(--text-secondary)">
+                        BunVM detects a <code style="color: var(--primary)">.bun-version</code> file in your project and switches to the specified version when entering the directory. Leaving the directory restores the previous version.
+                    </div>
+                </details>
+                <details class="faq-item glass rounded-3xl p-6 border" style="border-color: var(--border)">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="text-lg font-semibold" style="color: var(--text-primary)">Does BunVM require sudo or system changes?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-[var(--text-secondary)]"></i>
+                    </summary>
+                    <div class="faq-content mt-3" style="color: var(--text-secondary)">
+                        No. BunVM operates within your home directory and updates shell configuration files as needed. It never requires elevated privileges.
+                    </div>
+                </details>
+                <details class="faq-item glass rounded-3xl p-6 border" style="border-color: var(--border)">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="text-lg font-semibold" style="color: var(--text-primary)">Is BunVM compatible with macOS and Linux?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-[var(--text-secondary)]"></i>
+                    </summary>
+                    <div class="faq-content mt-3" style="color: var(--text-secondary)">
+                        Yes. BunVM officially supports macOS and Linux. Installation and version switching are consistent across platforms.
+                    </div>
+                </details>
+                <details class="faq-item glass rounded-3xl p-6 border" style="border-color: var(--border)">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="text-lg font-semibold" style="color: var(--text-primary)">How do aliases help?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-[var(--text-secondary)]"></i>
+                    </summary>
+                    <div class="faq-content mt-3" style="color: var(--text-secondary)">
+                        Aliases let you give memorable names to versions, like <code style="color: var(--primary)">stable</code> or <code style="color: var(--primary)">beta</code>, so you can switch quickly without remembering exact version numbers.
+                    </div>
+                </details>
+                <details class="faq-item glass rounded-3xl p-6 border" style="border-color: var(--border)">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="text-lg font-semibold" style="color: var(--text-primary)">Can I use BunVM in CI?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-[var(--text-secondary)]"></i>
+                    </summary>
+                    <div class="faq-content mt-3" style="color: var(--text-secondary)">
+                        Absolutely. BunVM is ideal for CI/CD pipelines. Use the install script and the project’s <code style="color: var(--primary)">.bun-version</code> to pin versions during builds and tests.
+                    </div>
+                </details>
+                <details class="faq-item glass rounded-3xl p-6 border" style="border-color: var(--border)">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="text-lg font-semibold" style="color: var(--text-primary)">Does BunVM support shell completion?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-[var(--text-secondary)]"></i>
+                    </summary>
+                    <div class="faq-content mt-3" style="color: var(--text-secondary)">
+                        Yes. BunVM provides smart autocompletion for Bash and Zsh, helping you discover commands and versions faster.
+                    </div>
+                </details>
+                <details class="faq-item glass rounded-3xl p-6 border" style="border-color: var(--border)">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="text-lg font-semibold" style="color: var(--text-primary)">How can I uninstall BunVM?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-[var(--text-secondary)]"></i>
+                    </summary>
+                    <div class="faq-content mt-3" style="color: var(--text-secondary)">
+                        Run <code style="color: var(--primary)">$ curl -fsSL https://uninstall.bunvm.com | bash</code>. This removes BunVM and all installed versions from your system.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="py-20 px-4" style="background: var(--bg-secondary)">
         <div class="max-w-4xl mx-auto text-center">
@@ -749,11 +917,11 @@
 
     <!-- Scripts -->
     <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
-
-        // Theme toggle
-        function toggleTheme() {
+         // Initialize Lucide Icons
+         lucide.createIcons();
+ 
+         // Theme toggle
+         function toggleTheme() {
             const html = document.documentElement;
             const isDark = html.classList.contains('dark');
 
@@ -807,7 +975,61 @@
                         block: 'start'
                     });
                 }
+                const panel = document.getElementById('nav-panel');
+                const toggle = document.getElementById('nav-toggle');
+                if (panel.classList.contains('open')) {
+                    panel.classList.remove('open');
+                    toggle.classList.remove('active');
+                    toggle.setAttribute('aria-expanded', 'false');
+                }
             });
+        });
+        const toggle = document.getElementById('nav-toggle');
+        const panel = document.getElementById('nav-panel');
+        const nav = document.querySelector('nav.glass');
+        function placePanel() {
+            const rect = nav.getBoundingClientRect();
+            panel.style.top = `${Math.round(rect.bottom + 12)}px`;
+            panel.style.left = `${Math.round(rect.left)}px`;
+            panel.style.width = `${Math.round(rect.width)}px`;
+            panel.style.transform = 'none';
+        }
+        function openPanel(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            placePanel();
+            panel.classList.add('open');
+            toggle.classList.add('active');
+            toggle.setAttribute('aria-expanded', 'true');
+        }
+        function closePanel() {
+            panel.classList.remove('open');
+            toggle.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+        function isDesktop() { return window.innerWidth >= 1280; }
+        function syncViewport() { if (isDesktop()) closePanel(); }
+        toggle.addEventListener('click', (e) => {
+            if (panel.classList.contains('open')) closePanel(); else openPanel(e);
+        }, { capture: true });
+        toggle.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                if (panel.classList.contains('open')) closePanel(); else openPanel(e);
+            }
+        });
+        window.addEventListener('resize', () => {
+            syncViewport();
+            if (panel.classList.contains('open')) placePanel();
+        });
+        window.addEventListener('orientationchange', () => {
+            syncViewport();
+            if (panel.classList.contains('open')) placePanel();
+        });
+        document.addEventListener('click', (e) => {
+            if (!panel.classList.contains('open')) return;
+            if (!panel.contains(e.target) && !toggle.contains(e.target)) closePanel();
         });
     </script>
 </body>
