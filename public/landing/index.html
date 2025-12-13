@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BunVM - The fast, simple, and powerful version manager for Bun. Zero dependencies, lightning fast, with auto-switching and tab completion.">
-    <meta name="keywords" content="bun, version manager, bunvm, bun.sh, javascript, typescript">
+    <meta name="description" content="Manage multiple Bun versions with zero dependencies, auto-switching, and tab completion. Lightning fast on macOS and Linux.">
     <link rel="icon" type="image/svg+xml" href="https://icon.icepanel.io/Technology/svg/Bun.svg">
-    <title>BunVM - The Ultimate Bun Version Manager</title>
+    <title>BunVM: Fast, Simple Bun Version Manager</title>
+    <link rel="canonical" href="https://bunvm.com/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="BunVM: Fast, Simple Bun Version Manager">
+    <meta property="og:description" content="Manage multiple Bun versions with zero dependencies, auto-switching, and tab completion. Lightning fast on macOS and Linux.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bunvm.com/">
+    <meta property="og:image" content="https://icon.icepanel.io/Technology/svg/Bun.svg">
+    <meta property="og:image:alt" content="BunVM version manager for Bun">
+    <meta property="og:site_name" content="BunVM">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BunVM: Fast, Simple Bun Version Manager">
+    <meta name="twitter:description" content="Manage multiple Bun versions with zero dependencies, auto-switching, and tab completion. Lightning fast on macOS and Linux.">
+    <meta name="twitter:image" content="https://icon.icepanel.io/Technology/svg/Bun.svg">
 
     <!-- Tailwind CSS v4 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,6 +31,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BunVM","url":"https://bunvm.com/","description":"Manage multiple Bun versions with zero dependencies, auto-switching, and tab completion.","applicationCategory":"DeveloperApplication","operatingSystem":"macOS, Linux","downloadUrl":"https://install.bunvm.com","brand":{"@type":"Brand","name":"BunVM"},"sameAs":["https://github.com/privjaac/bunvm"],"logo":"https://icon.icepanel.io/Technology/svg/Bun.svg"}
+    </script>
 
     <!-- Custom animations and styles -->
     <style>
@@ -278,7 +293,7 @@
 </head>
 <body class="transition-colors duration-300">
     <!-- Navigation -->
-    <nav class="glass">
+    <nav class="glass" role="navigation" aria-label="Primary">
         <div class="px-6 h-full flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <img src="https://icon.icepanel.io/Technology/svg/Bun.svg" alt="Bun Logo" width="32" height="32" class="w-8 h-8">
@@ -295,7 +310,7 @@
                         <div class="theme-option" id="light-toggle">Light</div>
                         <div class="theme-option active" id="dark-toggle">Dark</div>
                     </div>
-                    <a href="https://github.com/privjaac/bunvm" target="_blank" class="btn-primary px-4 py-2 rounded-full text-sm font-medium">
+                    <a href="https://github.com/privjaac/bunvm" target="_blank" rel="noopener noreferrer" class="btn-primary px-4 py-2 rounded-full text-sm font-medium">
                         GitHub
                     </a>
                 </div>
@@ -347,7 +362,7 @@
                 <a href="#install" class="btn-primary px-8 py-4 rounded-full font-semibold text-lg shadow-lg">
                     Get Started
                 </a>
-                <a href="https://github.com/privjaac/bunvm" target="_blank" class="glass px-8 py-4 rounded-full font-semibold text-lg" style="color: var(--text-primary)">
+                <a href="https://github.com/privjaac/bunvm" target="_blank" rel="noopener noreferrer" class="glass px-8 py-4 rounded-full font-semibold text-lg" style="color: var(--text-primary)">
                     View on GitHub
                 </a>
             </div>
@@ -677,10 +692,10 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="https://github.com/privjaac/bunvm" target="_blank" class="btn-primary px-8 py-4 rounded-full font-semibold text-lg">
+                    <a href="https://github.com/privjaac/bunvm" target="_blank" rel="noopener noreferrer" class="btn-primary px-8 py-4 rounded-full font-semibold text-lg">
                         View on GitHub
                     </a>
-                    <a href="https://github.com/privjaac/bunvm#readme" target="_blank" class="glass px-8 py-4 rounded-full font-semibold text-lg border" style="color: var(--text-primary); border-color: var(--border)">
+                    <a href="https://github.com/privjaac/bunvm#readme" target="_blank" rel="noopener noreferrer" class="glass px-8 py-4 rounded-full font-semibold text-lg border" style="color: var(--text-primary); border-color: var(--border)">
                         Read Documentation
                     </a>
                 </div>
