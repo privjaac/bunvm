@@ -12,13 +12,15 @@
     <meta property="og:description" content="Manage multiple Bun versions with zero dependencies, auto-switching, and tab completion. Lightning fast on macOS and Linux.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bunvm.com/">
-    <meta property="og:image" content="https://bunvm.com/og-image.svg">
+    <meta property="og:image" content="https://bunvm.com/og-image.jpeg">
+    <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:alt" content="BunVM version manager for Bun">
     <meta property="og:site_name" content="BunVM">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="BunVM: Fast, Simple Bun Version Manager">
     <meta name="twitter:description" content="Manage multiple Bun versions with zero dependencies, auto-switching, and tab completion. Lightning fast on macOS and Linux.">
-    <meta name="twitter:image" content="https://bunvm.com/og-image.svg">
+    <meta name="twitter:image" content="https://bunvm.com/og-image.jpeg">
+    <meta name="twitter:image:alt" content="BunVM version manager for Bun">
 
     <!-- Tailwind CSS v4 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -31,8 +33,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://bunvm.com/og-image.jpeg" as="image" type="image/jpeg" crossorigin>
     <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BunVM","url":"https://bunvm.com/","description":"Manage multiple Bun versions with zero dependencies, auto-switching, and tab completion.","applicationCategory":"DeveloperApplication","operatingSystem":"macOS, Linux","downloadUrl":"https://install.bunvm.com","brand":{"@type":"Brand","name":"BunVM"},"sameAs":["https://github.com/privjaac/bunvm"],"logo":"https://icon.icepanel.io/Technology/svg/Bun.svg"}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BunVM","url":"https://bunvm.com/","description":"Manage multiple Bun versions with zero dependencies, auto-switching, and tab completion.","applicationCategory":"DeveloperApplication","operatingSystem":"macOS, Linux","downloadUrl":"https://install.bunvm.com","brand":{"@type":"Brand","name":"BunVM"},"sameAs":["https://github.com/privjaac/bunvm"],"logo":"https://icon.icepanel.io/Technology/svg/Bun.svg","image":"https://bunvm.com/og-image.jpeg"}
     </script>
     <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is BunVM?","acceptedAnswer":{"@type":"Answer","text":"BunVM is a lightweight version manager for Bun focusing on speed, simplicity and zero external dependencies. It helps developers install, switch and manage Bun versions reliably."}},{"@type":"Question","name":"How does auto-switching work?","acceptedAnswer":{"@type":"Answer","text":"BunVM reads a .bun-version file in your project and automatically switches to the specified version when you enter the directory. Leaving the directory restores the previous version."}},{"@type":"Question","name":"Does BunVM require sudo?","acceptedAnswer":{"@type":"Answer","text":"No. BunVM runs in the user home directory and updates shell configuration files when needed without elevated privileges."}},{"@type":"Question","name":"Is BunVM cross-platform?","acceptedAnswer":{"@type":"Answer","text":"Yes. BunVM supports macOS and Linux with consistent installation and version switching behavior."}},{"@type":"Question","name":"What are version aliases?","acceptedAnswer":{"@type":"Answer","text":"Aliases let you assign names to versions, such as stable or beta, so you can switch quickly without remembering exact version numbers."}},{"@type":"Question","name":"Can I use BunVM in CI?","acceptedAnswer":{"@type":"Answer","text":"Yes. BunVM is ideal for CI/CD pipelines. Use the install script and your project .bun-version to pin versions during builds and tests."}},{"@type":"Question","name":"Does BunVM provide shell completion?","acceptedAnswer":{"@type":"Answer","text":"Yes. BunVM offers autocompletion for Bash and Zsh to help discover commands and versions faster."}},{"@type":"Question","name":"How do I uninstall BunVM?","acceptedAnswer":{"@type":"Answer","text":"Run curl -fsSL https://uninstall.bunvm.com | bash to remove BunVM and all installed versions from your system."}}]}

@@ -7,6 +7,9 @@
 /og-image.svg
   Content-Type: image/svg+xml; charset=utf-8
 
+/og-image.jpeg
+  Content-Type: image/jpeg
+
 /index.html
   Content-Type: text/html; charset=utf-8
   Strict-Transport-Security: max-age=31536000; includeSubDomains

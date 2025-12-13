@@ -1,4 +1,6 @@
-/robots.txt     /robots.txt     200
-/sitemap.xml    /sitemap.xml    200
-/og-image.svg   /og-image.svg   200
-/               /index.html     200
+https://bunvm.com/*   https://www.bunvm.com/$1      301
+/robots.txt           /robots.txt                   200
+/sitemap.xml          /sitemap.xml                  200
+/og-image.svg         /og-image.svg                 200
+/og-image.jpeg        /og-image.jpeg                200
+/*                     /index.html                  200
