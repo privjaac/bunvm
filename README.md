@@ -148,7 +148,7 @@ Show the currently active version.
 
 ```bash
 bunvm current
-# Output: ✔ Versión actual: 1.0.25
+# Output: ✔ Current version: 1.0.25
 ```
 
 ### `bunvm alias <name> <version>`

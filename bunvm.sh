@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # ------------------------------------------------------------------
-# Asegurar PATH mínimo del sistema (CRÍTICO)
+# Ensure minimum system PATH (CRITICAL)
 # ------------------------------------------------------------------
 SYSTEM_PATHS="/usr/bin:/bin:/usr/sbin:/sbin"
 
@@ -25,7 +25,7 @@ export BUNVM_VERSIONS="$BUNVM_DIR/versions"
 export BUNVM_ETC="$BUNVM_DIR/etc"
 
 # ------------------------------------------------------------------
-# Restaurar versión activa si existe
+# Restore active version if it exists
 # ------------------------------------------------------------------
 if [ -f "$BUNVM_ETC/current" ]; then
   CURRENT="$(cat "$BUNVM_ETC/current" 2>/dev/null)"
@@ -40,7 +40,7 @@ fi
 export PATH
 
 # ------------------------------------------------------------------
-# Cargar librerías
+# Load libraries
 # ------------------------------------------------------------------
 if [ -d "$BUNVM_LIB" ]; then
   for f in "$BUNVM_LIB"/*; do
@@ -49,7 +49,7 @@ if [ -d "$BUNVM_LIB" ]; then
 fi
 
 # ------------------------------------------------------------------
-# Autocompletado
+# Autocompletion
 # ------------------------------------------------------------------
 if [ -n "$BASH_VERSION" ]; then
   [ -f "$BUNVM_AUTOLOAD/completion.bash" ] && . "$BUNVM_AUTOLOAD/completion.bash"
@@ -58,7 +58,7 @@ elif [ -n "$ZSH_VERSION" ]; then
 fi
 
 # ------------------------------------------------------------------
-# Comando principal
+# Main command
 # ------------------------------------------------------------------
 bunvm() {
   local cmd="$1"
@@ -69,18 +69,18 @@ bunvm() {
       . "$BUNVM_CMDS/$cmd"
       ;;
     ""|help|-h|--help)
-      bunvm_msg "Uso: bunvm <comando>"
-      bunvm_msg "Comandos disponibles:"
-      bunvm_msg "  install    Instala una versión de Bun"
-      bunvm_msg "  uninstall  Desinstala una versión"
-      bunvm_msg "  use        Activa una versión"
-      bunvm_msg "  list       Lista versiones"
-      bunvm_msg "  current    Muestra versión activa"
-      bunvm_msg "  alias      Alias de versiones"
-      bunvm_msg "  selfupdate Actualiza BunVM"
+      bunvm_msg "Usage: bunvm <command>"
+      bunvm_msg "Available commands:"
+      bunvm_msg "  install    Install a Bun version"
+      bunvm_msg "  uninstall  Uninstall a version"
+      bunvm_msg "  use        Activate a version"
+      bunvm_msg "  list       List versions"
+      bunvm_msg "  current    Show active version"
+      bunvm_msg "  alias      Version aliases"
+      bunvm_msg "  selfupdate Update BunVM"
       ;;
     *)
-      bunvm_msg_error "Comando desconocido: $cmd"
+      bunvm_msg_error "Unknown command: $cmd"
       return 1
       ;;
   esac

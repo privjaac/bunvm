@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Función de autocompletado para bunvm
+# Autocompletion function for bunvm
 _bunvm_completion() {
   local cur prev words cword
 
@@ -11,7 +11,7 @@ _bunvm_completion() {
   words=("${COMP_WORDS[@]}")
   cword=$COMP_CWORD
 
-  # Lista de comandos principales
+  # List of main commands
   local commands="install uninstall use list current alias selfupdate help"
 
   # Si estamos en la primera palabra después de bunvm
@@ -20,7 +20,7 @@ _bunvm_completion() {
     return 0
   fi
 
-  # Obtener el comando (primera palabra)
+  # Get the command (first word)
   local cmd="${words[1]}"
 
   case "$cmd" in
@@ -29,7 +29,7 @@ _bunvm_completion() {
       if [ -d "$BUNVM_VERSIONS" ]; then
         local versions=$(find "$BUNVM_VERSIONS" -maxdepth 1 -type d -name 'bun-*' 2>/dev/null | sed 's#.*/bun-##' | tr '\n' ' ')
 
-        # Para 'use' también agregar aliases
+        # For 'use' also add aliases
         if [ "$cmd" = "use" ] && [ -f "$BUNVM_ETC/aliases" ]; then
           local aliases=$(cut -d'=' -f1 "$BUNVM_ETC/aliases" 2>/dev/null | tr '\n' ' ')
           versions="$versions $aliases"
@@ -40,17 +40,17 @@ _bunvm_completion() {
       ;;
 
     install)
-      # Para install, sugerir 'latest'
+      # For install, suggest 'latest'
       COMPREPLY=($(compgen -W "latest" -- "$cur"))
       ;;
 
     list)
-      # Para list, sugerir --local
+      # For list, suggest --local
       COMPREPLY=($(compgen -W "--local" -- "$cur"))
       ;;
 
     alias)
-      # Para alias <nombre> <version>, autocompletar versión en segundo argumento
+      # For alias <name> <version>, autocomplete version in second argument
       if [ "$cword" -eq 3 ]; then
         if [ -d "$BUNVM_VERSIONS" ]; then
           local versions=$(find "$BUNVM_VERSIONS" -maxdepth 1 -type d -name 'bun-*' 2>/dev/null | sed 's#.*/bun-##' | tr '\n' ' ')
@@ -63,5 +63,5 @@ _bunvm_completion() {
   return 0
 }
 
-# Registrar el autocompletado para bunvm
+# Register autocompletion for bunvm
 complete -F _bunvm_completion bunvm

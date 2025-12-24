@@ -23,7 +23,7 @@ bunvm_detect_platform() {
       esac
       ;;
     *)
-      bunvm_msg_error "Plataforma no soportada: $K $A"
+      bunvm_msg_error "Unsupported platform: $K $A"
       return 1
       ;;
   esac

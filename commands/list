@@ -3,9 +3,9 @@
 # bunvm list [--local]
 MODE="$1"
 
-bunvm_msg "🔎 Consultando versiones de Bun…"
+bunvm_msg "🔎 Querying Bun versions…"
 
-# Versión actual (si existe)
+# Current version (if exists)
 CURRENT=""
 if [ -f "$BUNVM_ETC/current" ]; then
   CURRENT="$(cat "$BUNVM_ETC/current")"
@@ -16,14 +16,14 @@ fi
 # ---------------------------
 
 get_remote_versions() {
-  # Devuelve la lista de tags bun-vX.Y.Z como X.Y.Z (una por línea)
+  # Returns the list of bun-vX.Y.Z tags as X.Y.Z (one per line)
   curl -fsSL "https://api.github.com/repos/oven-sh/bun/releases" 2>/dev/null \
     | grep '"tag_name"' \
     | sed 's/.*"bun-v//;s/".*//' 
 }
 
 get_local_versions() {
-  # Evitar errores en zsh cuando no hay coincidencias
+  # Avoid errors in zsh when there are no matches
   if [ ! -d "$BUNVM_VERSIONS" ]; then
     return
   fi
@@ -52,7 +52,7 @@ print_footer() {
 }
 
 # ---------------------------
-# Cargar datos
+# Load data
 # ---------------------------
 
 LOCAL_VERSIONS_ARRAY=()
@@ -70,11 +70,11 @@ fi
 print_header
 
 # ---------------------------
-# Solo local
+# Local only
 # ---------------------------
 if [ "$MODE" = "--local" ]; then
   if [ "${#LOCAL_VERSIONS_ARRAY[@]}" -eq 0 ]; then
-    bunvm_msg_info "No hay versiones instaladas aún."
+    bunvm_msg_info "No versions installed yet."
     print_footer
     return 0
   fi
@@ -97,14 +97,14 @@ if [ "$MODE" = "--local" ]; then
 fi
 
 # ---------------------------
-# Remoto + local
+# Remote + local
 # ---------------------------
 
 if [ -z "$REMOTE_VERSIONS" ]; then
-  bunvm_msg_error "No se pudo obtener la lista remota de versiones desde GitHub."
-  # como fallback mostramos solo locales
+  bunvm_msg_error "Could not get remote version list from GitHub."
+  # as fallback show only local versions
   if [ "${#LOCAL_VERSIONS_ARRAY[@]}" -eq 0 ]; then
-    bunvm_msg_info "Tampoco hay versiones locales instaladas."
+    bunvm_msg_info "No local versions installed either."
     print_footer
     return 1
   fi
@@ -126,7 +126,7 @@ if [ -z "$REMOTE_VERSIONS" ]; then
   return 0
 fi
 
-# Recorrer versiones remotas y marcar estado/local/actual
+# Iterate through remote versions and mark status/local/current
 echo "$REMOTE_VERSIONS" | while IFS= read -r VER; do
   [ -z "$VER" ] && continue
 

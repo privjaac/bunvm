@@ -2,34 +2,34 @@
 
 set -e
 export BUNVM_DIR="${BUNVM_DIR:-$HOME/.bunvm}"
-echo "🔧 Instalando BunVM en: $BUNVM_DIR"
+echo "🔧 Installing BunVM at: $BUNVM_DIR"
 mkdir -p "$BUNVM_DIR"
 mkdir -p "$BUNVM_DIR/commands" "$BUNVM_DIR/autoload" "$BUNVM_DIR/lib" "$BUNVM_DIR/versions" "$BUNVM_DIR/etc" "$BUNVM_DIR/tmp"
 
-# inicializar archivos de configuración básicos
+# initialize basic configuration files
 touch "$BUNVM_DIR/etc/aliases"
 touch "$BUNVM_DIR/etc/current"
 
-echo "📥 Descargando núcleo…"
+echo "📥 Downloading core…"
 curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/bunvm.sh" \
   -o "$BUNVM_DIR/bunvm.sh"
 chmod +x "$BUNVM_DIR/bunvm.sh"
 
-echo "📥 Descargando comandos…"
+echo "📥 Downloading commands…"
 for CMD in install uninstall use list current alias selfupdate; do
   curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/commands/$CMD" \
     -o "$BUNVM_DIR/commands/$CMD"
   chmod +x "$BUNVM_DIR/commands/$CMD"
 done
 
-echo "📥 Descargando librerías…"
+echo "📥 Downloading libraries…"
 for LIB in detect_platform fetch_version messages validate; do
   curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/lib/$LIB" \
     -o "$BUNVM_DIR/lib/$LIB"
   chmod +x "$BUNVM_DIR/lib/$LIB"
 done
 
-echo "📥 Descargando autoenv y autocompletado…"
+echo "📥 Downloading autoenv and autocompletion…"
 curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/autoenv.sh" \
   -o "$BUNVM_DIR/autoload/autoenv.sh"
 chmod +x "$BUNVM_DIR/autoload/autoenv.sh"
@@ -42,7 +42,7 @@ curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/compl
   -o "$BUNVM_DIR/autoload/completion.zsh"
 chmod +x "$BUNVM_DIR/autoload/completion.zsh"
 
-# actualizar shell profile
+# update shell profile
 if [ -f "$HOME/.zshrc" ]; then
   PROFILE="$HOME/.zshrc"
 elif [ -f "$HOME/.bashrc" ]; then
@@ -59,16 +59,16 @@ source \"\$BUNVM_DIR/bunvm.sh\"
 
 if ! grep -q "bunvm.sh" "$PROFILE" 2>/dev/null; then
   echo "$INIT_STR" >> "$PROFILE"
-  echo "🧩 BunVM agregado a $PROFILE"
+  echo "🧩 BunVM added to $PROFILE"
 else
-  echo "✔ BunVM ya estaba configurado en $PROFILE"
+  echo "✔ BunVM was already configured in $PROFILE"
 fi
 
 echo ""
-echo "🎉 BunVM instalado correctamente."
-echo "🔄 Cargando configuración sin reiniciar la terminal..."
+echo "🎉 BunVM installed successfully."
+echo "🔄 Loading configuration without restarting the terminal..."
 
-# Recargar entorno
+# Reload environment
 if [ -f "$PROFILE" ]; then
   set +e
   . "$PROFILE"
@@ -76,10 +76,10 @@ if [ -f "$PROFILE" ]; then
 fi
 
 echo ""
-echo "🎉 BunVM instalado correctamente."
-echo "➡ Reinicia la terminal o ejecuta: source $PROFILE"
+echo "🎉 BunVM installed successfully."
+echo "➡ Restart your terminal or run: source $PROFILE"
 echo ""
-echo "Ejemplo:"
+echo "Example:"
 echo "  bunvm install 1.0.0"
 echo "  bunvm use 1.0.0"
 echo "  bun --version"
