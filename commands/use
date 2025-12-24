@@ -3,11 +3,11 @@
 VERSION="$1"
 
 if [ -z "$VERSION" ]; then
-  bunvm_msg_error "Uso: bunvm use <versión | alias>"
+  bunvm_msg_error "Usage: bunvm use <version | alias>"
   return 1
 fi
 
-# resolver alias si existe
+# resolve alias if it exists
 if [ -f "$BUNVM_ETC/aliases" ]; then
   MATCH="$(grep -E "^$VERSION=" "$BUNVM_ETC/aliases" 2>/dev/null | head -n 1 || true)"
   if [ -n "$MATCH" ]; then
@@ -18,23 +18,23 @@ fi
 TARGET="$BUNVM_VERSIONS/bun-$VERSION"
 
 if [ ! -d "$TARGET" ]; then
-  bunvm_msg_error "La versión $VERSION no está instalada."
+  bunvm_msg_error "Version $VERSION is not installed."
   return 1
 fi
 
 if [ ! -f "$TARGET/bin/bun" ]; then
-  bunvm_msg_error "Instalación corrupta: falta $TARGET/bin/bun"
+  bunvm_msg_error "Corrupted installation: missing $TARGET/bin/bun"
   return 1
 fi
 
-# Activar en el shell actual
+# Activate in current shell
 case ":$PATH:" in
   *":$TARGET/bin:"*) ;;
   *) export PATH="$TARGET/bin:$PATH" ;;
 esac
 
-# Persistir como versión por defecto
+# Persist as default version
 echo "$VERSION" > "$BUNVM_ETC/current"
 
-bunvm_msg_success "Ahora usando Bun $VERSION"
-bunvm_msg_info "Versión guardada como default para futuros shells"
+bunvm_msg_success "Now using Bun $VERSION"
+bunvm_msg_info "Version saved as default for future shells"

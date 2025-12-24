@@ -1,58 +1,58 @@
 #!/usr/bin/env bash
 
-bunvm_msg "🔄 Actualizando BunVM…"
+bunvm_msg "🔄 Updating BunVM…"
 
-# actualizar core
+# update core
 if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/bunvm.sh" \
   -o "$BUNVM_DIR/bunvm.sh"; then
-  bunvm_msg_error "❌ No se pudo actualizar bunvm.sh"
+  bunvm_msg_error "❌ Could not update bunvm.sh"
   return 1
 fi
 chmod +x "$BUNVM_DIR/bunvm.sh"
 
-# actualizar comandos
+# update commands
 for CMD in install uninstall use list current alias selfupdate; do
   if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/commands/$CMD" \
     -o "$BUNVM_DIR/commands/$CMD"; then
-    bunvm_msg_error "❌ No se pudo actualizar comando: $CMD"
+    bunvm_msg_error "❌ Could not update command: $CMD"
     return 1
   fi
   chmod +x "$BUNVM_DIR/commands/$CMD"
 done
 
-# actualizar librerías
+# update libraries
 for LIB in detect_platform fetch_version messages validate; do
   if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/lib/$LIB" \
     -o "$BUNVM_DIR/lib/$LIB"; then
-    bunvm_msg_error "❌ No se pudo actualizar librería: $LIB"
+    bunvm_msg_error "❌ Could not update library: $LIB"
     return 1
   fi
   chmod +x "$BUNVM_DIR/lib/$LIB"
 done
 
-# actualizar autoenv
+# update autoenv
 if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/autoenv.sh" \
   -o "$BUNVM_DIR/autoload/autoenv.sh"; then
-  bunvm_msg_error "❌ No se pudo actualizar autoenv.sh"
+  bunvm_msg_error "❌ Could not update autoenv.sh"
   return 1
 fi
 chmod +x "$BUNVM_DIR/autoload/autoenv.sh"
 
-# actualizar autocompletado bash
+# update bash autocompletion
 if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/completion.bash" \
   -o "$BUNVM_DIR/autoload/completion.bash"; then
-  bunvm_msg_error "❌ No se pudo actualizar completion.bash"
+  bunvm_msg_error "❌ Could not update completion.bash"
   return 1
 fi
 chmod +x "$BUNVM_DIR/autoload/completion.bash"
 
-# actualizar autocompletado zsh
+# update zsh autocompletion
 if ! curl -fsSL "https://raw.githubusercontent.com/privjaac/bunvm/main/autoload/completion.zsh" \
   -o "$BUNVM_DIR/autoload/completion.zsh"; then
-  bunvm_msg_error "❌ No se pudo actualizar completion.zsh"
+  bunvm_msg_error "❌ Could not update completion.zsh"
   return 1
 fi
 chmod +x "$BUNVM_DIR/autoload/completion.zsh"
 
-bunvm_msg_success "BunVM actualizado correctamente."
-bunvm_msg_info "Recarga tu shell para activar el autocompletado: source ~/.zshrc (o ~/.bashrc)"
+bunvm_msg_success "BunVM updated successfully."
+bunvm_msg_info "Reload your shell to activate autocompletion: source ~/.zshrc (or ~/.bashrc)"

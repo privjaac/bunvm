@@ -3,7 +3,7 @@
 VERSION="$1"
 
 if [ -z "$VERSION" ]; then
-    bunvm_msg_error "Debes especificar una versión. Ej: bunvm install 1.0.2 o bunvm install latest"
+    bunvm_msg_error "You must specify a version. Example: bunvm install 1.0.2 or bunvm install latest"
     return 1
 fi
 
@@ -11,12 +11,12 @@ if [ "$VERSION" = "latest" ]; then
     if command -v bunvm_fetch_latest >/dev/null 2>&1; then
         VERSION="$(bunvm_fetch_latest)"
         if [ -z "$VERSION" ]; then
-            bunvm_msg_error "No se pudo obtener la última versión desde GitHub."
+            bunvm_msg_error "Could not get the latest version from GitHub."
             return 1
         fi
-        bunvm_msg_info "Usando última versión: $VERSION"
+        bunvm_msg_info "Using latest version: $VERSION"
     else
-        bunvm_msg_error "fetch_version no disponible para 'latest'."
+        bunvm_msg_error "fetch_version not available for 'latest'."
         return 1
     fi
 fi
@@ -25,7 +25,7 @@ PLATFORM="$(bunvm_detect_platform)" || return 1
 TARGET="$BUNVM_VERSIONS/bun-$VERSION"
 
 if [ -d "$TARGET" ]; then
-    bunvm_msg_info "✔ Bun $VERSION ya está instalado."
+    bunvm_msg_info "✔ Bun $VERSION is already installed."
     return 0
 fi
 
@@ -35,17 +35,17 @@ mkdir -p "$BUNVM_DIR/tmp"
 ZIP="$BUNVM_DIR/tmp/bun-$VERSION.zip"
 URL="https://github.com/oven-sh/bun/releases/download/bun-v$VERSION/bun-$PLATFORM.zip"
 
-bunvm_msg "🚀 Instalando Bun $VERSION ($PLATFORM)…"
+bunvm_msg "🚀 Installing Bun $VERSION ($PLATFORM)…"
 
 if ! curl -fsSL "$URL" -o "$ZIP"; then
-    bunvm_msg_error "❌ No se pudo descargar $URL"
+    bunvm_msg_error "❌ Could not download $URL"
     rm -f "$ZIP"
     return 1
 fi
 
 mkdir -p "$TARGET/tmp"
 if ! unzip -qo "$ZIP" -d "$TARGET/tmp"; then
-    bunvm_msg_error "❌ No se pudo descomprimir el archivo ZIP."
+    bunvm_msg_error "❌ Could not extract the ZIP file."
     rm -f "$ZIP"
     rm -rf "$TARGET/tmp"
     return 1
@@ -53,11 +53,11 @@ fi
 
 rm -f "$ZIP"
 
-# buscar el ejecutable 'bun' en cualquier profundidad
+# search for the 'bun' executable at any depth
 BINARY="$(find "$TARGET/tmp" -type f -name 'bun' 2>/dev/null | head -n 1)"
 
 if [ -z "$BINARY" ]; then
-    bunvm_msg_error "❌ No se encontró ningún ejecutable 'bun' en el ZIP."
+    bunvm_msg_error "❌ No 'bun' executable found in the ZIP."
     rm -rf "$TARGET/tmp"
     return 1
 fi
@@ -66,11 +66,11 @@ mv "$BINARY" "$TARGET/bin/bun"
 chmod +x "$TARGET/bin/bun"
 rm -rf "$TARGET/tmp"
 
-bunvm_msg_success "Bun $VERSION instalado correctamente"
-bunvm_msg_info "Actívalo con: bunvm use $VERSION"
+bunvm_msg_success "Bun $VERSION installed successfully"
+bunvm_msg_info "Activate it with: bunvm use $VERSION"
 
-# Activar automáticamente si no hay versión activa
+# Activate automatically if there's no active version
 if [ ! -f "$BUNVM_ETC/current" ] || [ -z "$(cat "$BUNVM_ETC/current")" ]; then
-  bunvm_msg_info "Activando Bun $VERSION automáticamente"
+  bunvm_msg_info "Activating Bun $VERSION automatically"
   bunvm use "$VERSION"
 fi

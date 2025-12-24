@@ -3,10 +3,10 @@
 if [ -f "$BUNVM_ETC/current" ]; then
     VERSION="$(cat "$BUNVM_ETC/current")"
     if [ -n "$VERSION" ]; then
-        bunvm_msg_success "Versión actual: $VERSION"
+        bunvm_msg_success "Current version: $VERSION"
     else
-        bunvm_msg_info "No hay versión activa."
+        bunvm_msg_info "No active version."
     fi
 else
-    bunvm_msg_info "No hay versión activa."
+    bunvm_msg_info "No active version."
 fi

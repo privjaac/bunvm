@@ -1,34 +1,34 @@
 #!/usr/bin/env zsh
 
-# Cargar sistema de autocompletado de zsh si no está cargado
+# Load zsh autocompletion system if not already loaded
 if ! command -v compdef >/dev/null 2>&1; then
   autoload -Uz compinit
   compinit
 fi
 
-# Función de autocompletado para bunvm en zsh
+# Autocompletion function for bunvm in zsh
 _bunvm() {
   local -a commands
   commands=(
-    'install:Instala una versión de Bun'
-    'uninstall:Desinstala una versión'
-    'use:Activa una versión'
-    'list:Lista versiones'
-    'current:Muestra versión activa'
-    'alias:Crea alias de versiones'
-    'selfupdate:Actualiza BunVM'
-    'help:Muestra ayuda'
+    'install:Install a Bun version'
+    'uninstall:Uninstall a version'
+    'use:Activate a version'
+    'list:List versions'
+    'current:Show active version'
+    'alias:Create version aliases'
+    'selfupdate:Update BunVM'
+    'help:Show help'
   )
 
   local -a installed_versions
   local -a aliases_list
 
-  # Obtener versiones instaladas
+  # Get installed versions
   if [ -d "$BUNVM_VERSIONS" ]; then
     installed_versions=(${(f)"$(find "$BUNVM_VERSIONS" -maxdepth 1 -type d -name 'bun-*' 2>/dev/null | sed 's#.*/bun-##')"})
   fi
 
-  # Obtener aliases
+  # Get aliases
   if [ -f "$BUNVM_ETC/aliases" ]; then
     aliases_list=(${(f)"$(cut -d'=' -f1 "$BUNVM_ETC/aliases" 2>/dev/null)"})
   fi
@@ -59,13 +59,13 @@ _bunvm() {
 
         install)
           local -a install_options
-          install_options=('latest:Última versión disponible')
+          install_options=('latest:Latest available version')
           _describe -t versions 'install options' install_options
           ;;
 
         list)
           local -a list_options
-          list_options=('--local:Solo versiones locales')
+          list_options=('--local:Local versions only')
           _describe -t options 'list options' list_options
           ;;
 
@@ -81,5 +81,5 @@ _bunvm() {
   return 0
 }
 
-# Registrar el autocompletado para bunvm
+# Register autocompletion for bunvm
 compdef _bunvm bunvm
